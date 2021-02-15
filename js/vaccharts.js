@@ -39,7 +39,22 @@ function lineGraph(data, id, flag, type) {
         unit: 'date',
         chartdata: {
             labels: name,
-            datasets: [
+            datasets: type === "province" ? [
+                {
+                    label: "Doses Distributed",
+                    lineTension: 0.2,
+                    pointRadius: 0,
+                    pointHoverRadius: 4,
+                    pointHitRadius: 3,
+                    pointBorderWidth: 1,
+                    pointBorderColor: "rgba(255,255,255,0.8)",
+                    pointBackgroundColor: "#353A3F",
+                    pointHoverBackgroundColor: "#353A3F",
+                    backgroundColor: "rgba(84, 202, 55, 0.2)",
+                    borderColor: "#353A3F",
+                    data: allData["vaccines_distributed"],
+                    hidden: false
+                },
                 {
                     label: "Doses Administered",
                     lineTension: 0.2,
@@ -55,7 +70,23 @@ function lineGraph(data, id, flag, type) {
                     data: allData["vaccinations"],
                     hidden: false
                 }
-            ]
+            ] : [
+                    {
+                        label: "Doses Administered",
+                        lineTension: 0.2,
+                        pointRadius: 0,
+                        pointHoverRadius: 4,
+                        pointHitRadius: 3,
+                        pointBorderWidth: 1,
+                        pointBorderColor: "rgba(255,255,255,0.8)",
+                        pointBackgroundColor: "#353A3F",
+                        pointHoverBackgroundColor: "#353A3F",
+                        backgroundColor: "rgba(92,59,141,0.2)",
+                        borderColor: "#353A3F",
+                        data: allData["vaccinations"],
+                        hidden: false
+                    }
+                ]
         },
         ticks: 7
     }

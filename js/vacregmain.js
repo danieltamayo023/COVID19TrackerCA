@@ -238,7 +238,7 @@ $(document).ready(() => {
             fillNulls(res.data);
             last5days = getLast5Days(res.data, "total_");
             lineGraph(res.data, "#dailyCaseChart", false, "province");
-            lineGraph(res.data, "#cumulativeCaseChart", true);
+            lineGraph(res.data, "#cumulativeCaseChart", true, "province");
         });
 
         //// draw new and cumulative cases graphs

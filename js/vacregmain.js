@@ -124,6 +124,9 @@ $(document).ready(() => {
     }).then(res => {
         provinces = res;
         var pCode = getParameterByName("p");
+        if (!pCode || pCode === "") {
+            window.location = "vaccinationtracker.html";
+        }
         showAll(pCode);
     });
 

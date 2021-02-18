@@ -152,6 +152,50 @@ function barGraph(data, id) {
     draw(graphConfig);
 }
 
+//pulled from barGraph function
+//built for regions where vaccines_distributed is not available
+function barGraph2(data, id) {
+    var name = [];
+    var allData = {
+        "vaccinations": []
+    };
+
+    data.sort(function (a, b) {
+        return b["total_vaccinations"] - a["total_vaccinations"];
+    });
+
+    for (var i in data) {
+        name.push(data[i].name);
+        for (var key in allData) {
+            var dataItem = data[i]["total_" + key];
+            if (!dataItem) dataItem = 0;
+            allData[key].push(dataItem);
+        }
+    }
+
+    var graphConfig = {
+        graphTarget: $(id),
+        type: 'bar',
+        unit: 'month',
+        chartdata: {
+            labels: name,
+            datasets: [
+                {
+                    label: "Doses Administered",
+                    backgroundColor: "#353A3F",
+                    borderColor: "#353A3F",
+                    data: allData["vaccinations"],
+                    hidden: false
+                }
+            ]
+        },
+        ticks: 15
+    }
+
+    // renders the graph
+    draw(graphConfig);
+}
+
 
 // draw: renders the graph to HTML
 // @param graphConfig: {} config for graph

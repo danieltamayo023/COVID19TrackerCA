@@ -205,7 +205,8 @@ function barGraph2(data, id) {
                     ctx.font = "16px normal 'Helvetica Nueue'";
                     ctx.fillText(noDataText ? noDataText : 'No data to display', width / 2, height / 2);
                     ctx.restore();
-                    chart.canvas.nextElementSibling.remove();
+                    if (chart.canvas.nextElementSibling !== null)
+                        chart.canvas.nextElementSibling.classList.add("d-none");
                 }
             }
         }]

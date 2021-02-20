@@ -10,6 +10,7 @@ var totalVaccinations = 0;
 var totalVaccinationsChange = 0;
 var last5days = {};
 var regions = [];
+var noDataText = "";
 
 // Helper function to format numbers with commas
 const formatter = new Intl.NumberFormat('en-CA');
@@ -126,7 +127,8 @@ $(document).ready(() => {
         var pCode = getParameterByName("p");
         if (!pCode || pCode === "") {
             window.location = "vaccinationtracker.html";
-        }
+        } else
+            pCode = pCode.toUpperCase();
         showAll(pCode);
     });
 
@@ -139,6 +141,7 @@ $(document).ready(() => {
         province = provinces.find(function (_p) { return pCode === _p.code; });
         var population = province.population;
         var pText = province.name;
+        noDataText = "No Regional Data Released by " + pText;
         $(".display-province").text(pText);
         //$(".display-select").hide();
         // get and update header, and cases by province table footer

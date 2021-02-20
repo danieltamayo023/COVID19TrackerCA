@@ -108,7 +108,7 @@ function barGraph(data, id) {
         "vaccines_distributed": []
     };
 
-    data.sort(function(a, b) {
+    data.sort(function (a, b) {
         return b["total_vaccinations"] - a["total_vaccinations"];
     });
 
@@ -136,7 +136,7 @@ function barGraph(data, id) {
                     data: allData["vaccines_distributed"],
                     hidden: false
                 },
-                                {
+                {
                     label: "Doses Administered",
                     backgroundColor: "#353A3F",
                     borderColor: "#353A3F",
@@ -179,7 +179,7 @@ function barGraph2(data, id) {
         unit: 'month',
         chartdata: {
             labels: name,
-            datasets: [
+            datasets: data.length > 0 ? [
                 {
                     label: "Doses Administered",
                     backgroundColor: "#353A3F",
@@ -187,9 +187,28 @@ function barGraph2(data, id) {
                     data: allData["vaccinations"],
                     hidden: false
                 }
-            ]
+            ] : [],
         },
-        ticks: 15
+        ticks: 15,
+        plugins: [{
+            afterDraw: function (chart) {
+                if (chart.data.datasets.length === 0) {
+                    // No data is present
+                    var ctx = chart.chart.ctx;
+                    var width = chart.chart.width;
+                    var height = chart.chart.height
+                    chart.clear();
+
+                    ctx.save();
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.font = "16px normal 'Helvetica Nueue'";
+                    ctx.fillText(noDataText ? noDataText : 'No data to display', width / 2, height / 2);
+                    ctx.restore();
+                    chart.canvas.nextElementSibling.remove();
+                }
+            }
+        }]
     }
 
     // renders the graph
@@ -234,7 +253,8 @@ function draw(graphConfig) {
             legend: {
                 display: true
             }
-        }
+        },
+        plugins: graphConfig.plugins
     });
 
     graphConfig.graphTarget.data("chart", chart);
@@ -270,7 +290,7 @@ function updateGraph(container) {
         data.labels = labels;
         var itemsRemoved = originalCount - labels.length;
         data.datasets.forEach(dataset => {
-           dataset.data.splice(0, itemsRemoved);
+            dataset.data.splice(0, itemsRemoved);
         });
     }
 
@@ -298,15 +318,15 @@ function updateGraph(container) {
     graph.update();
 }
 
-function movingAvg(array, count, qualifier){
+function movingAvg(array, count, qualifier) {
 
     // calculate average for subarray
-    var avg = function(array, qualifier){
+    var avg = function (array, qualifier) {
 
         var sum = 0, count = 0, val;
-        for (var i in array){
+        for (var i in array) {
             val = array[i];
-            if (!qualifier || qualifier(val)){
+            if (!qualifier || qualifier(val)) {
                 sum += val;
                 count++;
             }
@@ -318,11 +338,11 @@ function movingAvg(array, count, qualifier){
     var result = [], val;
 
     // pad beginning of result with null values
-    for (var i=0; i < count-1; i++)
+    for (var i = 0; i < count - 1; i++)
         result.push(null);
 
     // calculate average for each subarray and add to result
-    for (var i=0, len=array.length - count; i <= len; i++){
+    for (var i = 0, len = array.length - count; i <= len; i++) {
 
         val = avg(array.slice(i, i + count), qualifier);
         if (isNaN(val))

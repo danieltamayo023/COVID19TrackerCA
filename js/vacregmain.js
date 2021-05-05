@@ -11,6 +11,48 @@ var totalVaccinationsChange = 0;
 var last5days = {};
 var regions = [];
 var noDataText = "";
+var totalPopulationVaccinated = 0;
+var totalPopulationVaccinated16 = 0;
+var populationObj = [{
+    "province": "AB",
+    "population": 3547485
+}, {
+    "province": "BC",
+    "population": 4378888
+}, {
+    "province": "MB",
+    "population": 1101731
+}, {
+    "province": "NB",
+    "population": 661556
+}, {
+    "province": "NL",
+    "population": 446985
+}, {
+    "province": "NT",
+    "population": 35535
+}, {
+    "province": "NS",
+    "population": 833085
+}, {
+    "province": "NU",
+    "population": 26207
+}, {
+    "province": "ON",
+    "population": 12296737
+}, {
+    "province": "PE",
+    "population": 133390
+}, {
+    "province": "QC",
+    "population": 7138076
+}, {
+    "province": "SK",
+    "population": 933947
+}, {
+    "province": "YT",
+    "population": 34480
+}];
 
 // Helper function to format numbers with commas
 const formatter = new Intl.NumberFormat('en-CA');
@@ -21,6 +63,8 @@ function format(value) {
     // otherwise return the number as a string with commas in it
     return formattedValue;
 }
+
+
 
 // Controls the state of the application, sets up correct data information
 $(document).ready(() => {
@@ -103,6 +147,19 @@ $(document).ready(() => {
         }
     });
 
+    $("#popDoseToggle").on('change', function () {
+        var checked = $("#popDoseToggle").prop("checked");
+        if (checked) {
+            $(".summary-header-percentVaccinated > h1").text((totalPopulationVaccinated16).toFixed(3) + "%");
+            $(".summary-header-percentVaccinated > b").text("of Canadians 16+ have received at least one dose");
+
+        }
+        else {
+            $(".summary-header-percentVaccinated > h1").text((totalPopulationVaccinated).toFixed(3) + "%");
+            $(".summary-header-percentVaccinated > b").text("of the Canadian population has received at least one dose");
+        }
+    });
+
     $(".summary-arrow").click(function () {
         var container = $(this).next();
         container.empty();
@@ -118,6 +175,8 @@ $(document).ready(() => {
         }
         container.toggle();
     });
+
+
 
     var provinces = [];
     $.ajax({
@@ -140,12 +199,17 @@ $(document).ready(() => {
             return "";
         province = provinces.find(function (_p) { return pCode === _p.code; });
         var population = province.population;
+        var population16 = populationObj.find(function (_p) { return pCode === _p.province; }).population;
         var pText = province.name;
-        noDataText = "No Regional Data Released by " + pText;
+        noDataText = pText + " does not release regional vaccination data";
         $(".display-province").text(pText);
         //$(".display-select").hide();
         // get and update header, and cases by province table footer
         //draw map and cases by province graph and table
+
+
+        document.querySelector('title').textContent = `COVID-19 Tracker Canada - ${pText} Vaccination Tracker`;
+
         $.ajax({
             url: api_url + "summary/split"
         }).then(res => {
@@ -160,6 +224,8 @@ $(document).ready(() => {
             percentVaccinated = Math.floor((data.total_vaccinations - data.total_vaccinated) / population * 100) / 100;
             vaccinationsChange = data.change_vaccinations;
             vaccinesDistributed = data.total_vaccines_distributed;
+            totalPopulationVaccinated = ((data.total_vaccinations - data.total_vaccinated) / population) * 100;
+            totalPopulationVaccinated16 = ((data.total_vaccinations - data.total_vaccinated) / population16) * 100;
 
             // update timestamp
             $("#updateTime").text("As of " + moment(res.last_updated).format("dddd [at] h:mm a [CST, ]"));
@@ -280,7 +346,7 @@ function buildRegionTable(data, regionData) {
         var regName = typeof regProvinceData !== "undefined" ? regProvinceData.engname : "Region " + item.hr_uid;
         var itemTotalVaccinations = (item.total_vaccinations === null || item.total_vaccinations === undefined) ? "No Data" : item.total_vaccinations;
         var itemTotalVaccinated = (item.total_vaccinated === null || item.total_vaccinated === undefined) ? "No Data" : item.total_vaccinated;
-        
+
         // append data to row
         $('#vaccinationsProvinceTable').append(
             "<tr class='provinceRow'>" +

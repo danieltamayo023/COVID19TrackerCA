@@ -8,6 +8,8 @@ var hospitalizations = 0;
 var hospitalizationsChange = 0;
 var totalVaccinations = 0;
 var totalVaccinationsChange = 0;
+var totalPopulationVaccinated = 0;
+var totalPopulationVaccinated16 = 0;
 var last5days = {};
 var regions = [];
 
@@ -33,21 +35,24 @@ $(document).ready(() => {
         $("#activeCases").prop("checked", false);
         $("#criticalCases").prop("checked", false);
 
-       // totalCases = data.total_cases;
-       // totalCasesChange = data.change_cases;
-      //  activeCases = data.total_cases - data.total_fatalities - data.total_recoveries;
-       // activeCasesChange = data.change_cases - data.change_fatalities - data.change_recoveries;
-       // critical = data.total_criticals;
-       // criticalChange = data.change_criticals;
-       //  hospitalizations = data.total_hospitalizations;
+        // totalCases = data.total_cases;
+        // totalCasesChange = data.change_cases;
+        //  activeCases = data.total_cases - data.total_fatalities - data.total_recoveries;
+        // activeCasesChange = data.change_cases - data.change_fatalities - data.change_recoveries;
+        // critical = data.total_criticals;
+        // criticalChange = data.change_criticals;
+        //  hospitalizations = data.total_hospitalizations;
         // hospitalizationsChange = data.change_hospitalizations;
-        
+
         vaccinations = data.total_vaccinations;
         peopleVaccinated = data.total_vaccinations - data.total_vaccinated;
         twoDoses = data.total_vaccinated;
         percentVaccinated = Math.floor((data.total_vaccinations - data.total_vaccinated) / canadaPopulation * 100) / 100;
         vaccinationsChange = data.change_vaccinations;
         vaccinesDistributed = data.total_vaccines_distributed;
+
+        totalPopulationVaccinated = ((data.total_vaccinations - data.total_vaccinated) / 38008005) * 100;
+        totalPopulationVaccinated16 = ((data.total_vaccinations - data.total_vaccinated) / 31568102) * 100;
 
         // update timestamp
 
@@ -192,6 +197,19 @@ $(document).ready(() => {
         else {
             $(".summary-header-vaccinations > h1").text(format(vaccinations) + " doses administered");
             $(".summary-header-vaccinations > b").text(displayNewCases(vaccinationsChange));
+        }
+    });
+
+    $("#popDoseToggle").on('change', function () {
+        var checked = $("#popDoseToggle").prop("checked");
+        if (checked) {
+            $(".summary-header-percentVaccinated > h1").text((totalPopulationVaccinated16).toFixed(3) + "%");
+            $(".summary-header-percentVaccinated > b").text("of Canadians 16+ have received at least one dose");
+
+        }
+        else {
+            $(".summary-header-percentVaccinated > h1").text((totalPopulationVaccinated).toFixed(3) + "%");
+            $(".summary-header-percentVaccinated > b").text("of the Canadian population has received at least one dose");
         }
     });
 
@@ -372,7 +390,7 @@ function buildProvinceTable(data, provinceData) {
             "Last updated: <b>" + updatedAt + "</b><br>" +
             "Update expected by: <b>" + expectedTime(item.province) + "</b>" +
             "'></span>" +
-            "<span>" + provinceProperties(item.province).name + "</span>" +
+            "<span>" + "<a style='color:black;' href='provincevac.html?p=" + provinceProperties(item.province).code + "'><i>" +  provinceProperties(item.province).name + "</i></a> </span>" +
             "</td>" +
             "<td data-per-capita='" + vaccinationsPer100000 + "'><i>" + format(item.total_vaccinations) + (item.change_vaccinations ? ("<i>" + " " + displayNewCases(item.change_vaccinations)) : "" + "</i>") + "</i></td>" +
             "<td><i>" + format(item.total_vaccines_distributed) + "</i></td>" +

@@ -202,7 +202,7 @@ function barGraph2(data, id) {
                     ctx.save();
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
-                    ctx.font = "16px normal 'Helvetica Nueue'";
+                    ctx.font = "30px normal 'Helvetica Nueue'";
                     ctx.fillText(noDataText ? noDataText : 'No data to display', width / 2, height / 2);
                     ctx.restore();
                     if (chart.canvas.nextElementSibling !== null)

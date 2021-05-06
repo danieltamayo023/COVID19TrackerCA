@@ -262,7 +262,7 @@ $(document).ready(() => {
 
         var data = res.data;
 
-        data.forEach(function(item) {
+        data.forEach(function (item) {
             item.province = provinceProperties(item.province) ? provinceProperties(item.province).name : item.province;
             item.date = moment(item.date).format('MM/DD/YY');
         });
@@ -273,31 +273,31 @@ $(document).ready(() => {
             ],
             "data": data,
             "columns": [{
-                    "data": "id"
-                }, {
-                    "data": "date"
-                }, {
-                    "data": "province"
-                }, {
-                    "data": "city"
-                }, {
-                    "data": "age"
-                }, {
-                    "data": "travel_history"
-                }, {
-                    "data": "confirmed_presumptive"
-                },
-                {
-                    "data": "source",
-                    "render": (data, type) => {
-                        if (type === 'display') data = '<a href="' + data + '">Source</a>';
+                "data": "id"
+            }, {
+                "data": "date"
+            }, {
+                "data": "province"
+            }, {
+                "data": "city"
+            }, {
+                "data": "age"
+            }, {
+                "data": "travel_history"
+            }, {
+                "data": "confirmed_presumptive"
+            },
+            {
+                "data": "source",
+                "render": (data, type) => {
+                    if (type === 'display') data = '<a href="' + data + '">Source</a>';
 
-                        return data;
-                    }
+                    return data;
                 }
+            }
             ]
         });
-    })
+    });
 
     // get notice
     $.ajax({
@@ -312,6 +312,24 @@ $(document).ready(() => {
             $("#statisticsNotice .card-body").append("<h3>" + note.title + "</h3><p>" + note.description + "</p>");
         }
     });
+
+    $.ajax({
+        url: api_url + "vaccines/distribution",
+        type: "GET",
+    }).then(res => {
+        var data = res.data;
+        pieChart(data[0], "#vaccineDistribution");
+    });
+
+    $.ajax({
+        url: api_url + "vaccines/distribution/split",
+        type: "GET",
+    }).then(res => {
+        buildVaccineDistributionTable(res.data);
+        $("#vaccineDistributionLastUpdate").text(res.last_updated);
+    });
+    
+    
 
 
     $(window).on("resize", function() {
@@ -406,5 +424,19 @@ function buildProvinceTable(data, provinceData) {
         $('[data-toggle="tooltip"]').tooltip({
             template: '<div class="tooltip province-status-tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'
         });
+    });
+}
+
+function buildVaccineDistributionTable(data) {
+    data.forEach(function (item) {
+        $('#vaccineDistributionByProvinceTable').append(
+            "<tr class='provinceRow'>" +
+            "<td>" + provinceProperties(item.province).name + "</td>" +
+            "<td>" + (item.moderna ? format(item.moderna) : 0) + (item.moderna_administered ? " <i>(" + format(item.moderna_administered) + " administered)</i>" : "") + "</td>" +
+            "<td>" + (item.pfizer_biontech ? format(item.pfizer_biontech) : 0) + (item.pfizer_biontech_administered ? " <i>(" + format(item.pfizer_biontech_administered) + " administered)</i>" : "") + "</td>" +
+            "<td>" + (item.astrazeneca ? format(item.astrazeneca) : 0) + (item.astrazeneca_administered ? " <i>(" + format(item.astrazeneca_administered) + " administered)</i>" : "") + "</td>" +
+            "<td>" + (item.johnson ? format(item.johnson) : 0) + (item.johnson_administered ? " <i>(" + format(item.johnson_administered) + " administered)</i>" : "") + "</td>" +
+            "</tr>"
+        )
     });
 }

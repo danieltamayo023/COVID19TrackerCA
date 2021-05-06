@@ -226,7 +226,7 @@ function draw(graphConfig) {
     var chart = new Chart(graphConfig.graphTarget, {
         type: graphConfig.type,
         data: graphConfig.chartdata,
-        options: {
+        options: graphConfig.type === "pie" ? null : {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
@@ -353,4 +353,34 @@ function movingAvg(array, count, qualifier) {
     }
 
     return result;
+}
+
+function pieChart(data, id) {
+    const config = {
+        graphTarget: $(id),
+        type: 'pie',
+        chartdata: {
+            labels: [
+                'Moderna',
+                'Pfizer-BioNTech',
+                'AstraZeneca',
+                'Johnson & Johnson'
+            ],
+            datasets: [{
+                label: 'My First Dataset',
+                data: [data.pfizer_biontech, data.moderna, data.astrazeneca, data.johnson],
+                backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)',
+                    'rgb(35, 150, 34)'
+                ],
+                hoverOffset: 4
+            }]
+        },
+        unit: null,
+        ticks: null
+    };
+
+    draw(config);
 }

@@ -321,6 +321,16 @@ $(document).ready(() => {
             lineGraph(res.data, "#dailyCaseChart", false);
             lineGraph(res.data, "#cumulativeCaseChart", true, "province");
         });
+
+        $.ajax({
+            url: api_url + "vaccines/distribution/split",
+            type: "GET",
+        }).then(res => {
+            var data = res.data.find(function (r) {
+                return r.province === pCode;
+            });
+            pieChart(data, "#vaccineDistribution");
+        });
     }
 
     $(window).on("resize", function () {

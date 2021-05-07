@@ -319,18 +319,16 @@ $(document).ready(() => {
     }).then(res => {
         var data = res.data;
         pieChart(data[0], "#vaccineDistribution");
-    });
-
-    $.ajax({
-        url: api_url + "vaccines/distribution/split",
-        type: "GET",
-    }).then(res => {
-        buildVaccineDistributionTable(res.data);
         $("#vaccineDistributionLastUpdate").text(res.last_updated);
+        $.ajax({
+            url: api_url + "vaccines/distribution/split",
+            type: "GET",
+        }).then(res2 => {
+            data[0].country = "Canada";
+            res2.data.push(data[0]);
+            buildVaccineDistributionTable(res2.data);
+        });
     });
-    
-    
-
 
     $(window).on("resize", function() {
         $('#totalCasesProvinceTable .regionTable').each((index, regionsRow) => {
@@ -431,7 +429,7 @@ function buildVaccineDistributionTable(data) {
     data.forEach(function (item) {
         $('#vaccineDistributionByProvinceTable').append(
             "<tr class='provinceRow'>" +
-            "<td>" + provinceProperties(item.province).name + "</td>" +
+                "<td>" + (item.country ? "<b>" + item.country + "</b>" : provinceProperties(item.province).name) + "</td>" +
             "<td>" + (item.moderna ? format(item.moderna) : 0) + (item.moderna_administered ? " <i>(" + format(item.moderna_administered) + " administered)</i>" : "") + "</td>" +
             "<td>" + (item.pfizer_biontech ? format(item.pfizer_biontech) : 0) + (item.pfizer_biontech_administered ? " <i>(" + format(item.pfizer_biontech_administered) + " administered)</i>" : "") + "</td>" +
             "<td>" + (item.astrazeneca ? format(item.astrazeneca) : 0) + (item.astrazeneca_administered ? " <i>(" + format(item.astrazeneca_administered) + " administered)</i>" : "") + "</td>" +

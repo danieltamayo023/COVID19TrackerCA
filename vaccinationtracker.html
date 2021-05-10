@@ -24,10 +24,10 @@
     <script src="https://cdn.jsdelivr.net/npm/@turf/turf@5.1.6/turf.min.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css" rel="stylesheet" />
 
-    <script type="text/javascript" src="js/config.js?v=5.7.4"></script>
-    <script type="text/javascript" src="js/vacmap.js?v=5.5.4"></script>
-    <script type="text/javascript" src="js/vaccharts.js?v=5.6.4"></script>
-    <script type="text/javascript" src="js/vacmain.js?v=9.3.5"></script>
+    <script type="text/javascript" src="js/config.js?v=6.7.4"></script>
+    <script type="text/javascript" src="js/vacmap.js?v=6.5.4"></script>
+    <script type="text/javascript" src="js/vaccharts.js?v=6.6.4"></script>
+    <script type="text/javascript" src="js/vacmain.js?v=9.4.5"></script>
 
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -106,7 +106,7 @@
                             <div class="card-body summary-header-vaccinations">
                                 <h1></h1> <b></b>
                                 <div class="material-switch pull-right">
-                                    <div class="switch-label d-inline-block">People <span data-toggle='tooltip' title='Two doses are required to vaccinate an individual; this value indicates the approximate number of people who have received at least one dose.'><i class="far fa-question-circle"></i></span></div>
+                                    <div class="switch-label d-inline-block">People <span data-toggle='tooltip' title='Two doses are required to vaccinate an individual; this value indicates the number of people who have received at least one dose.'><i class="far fa-question-circle"></i></span></div>
                                     <div class="d-inline-block">
                                         <input id="criticalCases" name="criticalCases" type="checkbox" />
                                         <label for="criticalCases" class="label-success"></label>
@@ -127,13 +127,14 @@
                         <div class="card bg-secondary text-white mb-4">
                             <div class="card-body summary-header-percentVaccinated">
                                 <h1></h1> <b></b>
-                                <div class="material-switch pull-right">
+                                <!-- <div class="material-switch pull-right">
                                     <div class="switch-label d-inline-block">Eligible <span data-toggle='tooltip' title='Two doses are required to vaccinate an individual; this value indicates the approximate number of people who have received at least one dose.'><i class="far fa-question-circle"></i></span></div>
                                     <div class="d-inline-block">
                                         <input id="popDoseToggle" name="popDoseToggle" type="checkbox" />
                                         <label for="popDoseToggle" class="label-success"></label>
                                     </div>
                                 </div>
+                            -->
                             </div>
                         </div>
                     </div>
@@ -325,46 +326,7 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-xl-6">
-                        <div class="card mb-4">
-                            <div class="card-header"><i class="fas fa-chart-bar mr-1"></i><span id="vaccineDistributionByProvince">Vaccine Distribution By Province</span></div>
-                            <div class="card-body" id="vaccineDistributionByProvinceDiv">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-hover" width="100%" cellspacing="0">
-                                        <thead>
-                                            <tr>
-                                                <th>Province</th>
-                                                <th>Moderna</th>
-                                                <th>Pfizer-BioNTech</th>
-                                                <th>AstraZeneca</th>
-                                                <th>Johnson & Johnson</th>
-                                            </tr>
-                                        </thead>
-                                        <tfoot>
-                                            <tr>
-                                                <td colspan="5"><i>Last updated: <b id="vaccineDistributionLastUpdate"></b></i></td>
-                                            </tr>
-                                        </tfoot>
-                                        <tbody id="vaccineDistributionByProvinceTable"></tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-xl-6">
-                        <div class="card mb-4 vac-dist">
-                            <div class="card-header"><i class="fas fa-chart-area mr-1"></i><span id="newCasesByDay">Canada Vaccine Distribution</span></div>
-                            <div class="card-body" id="vaccineDistributionDiv">
-                                <canvas id="vaccineDistribution" height="200"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-12">
+                                <div class="card mb-12">
                     <div class="row no-gutters">
                         <div class="col-md-8">
                             <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -390,6 +352,70 @@
                 </div>
 
                 <br>
+
+
+
+
+                <div class="row">
+
+
+                                        <div class="col-xl-6">
+                        <div class="card mb-4 vac-dist">
+                            <div class="card-header"><i class="fas fa-chart-area mr-1"></i><span id="newCasesByDay">Canada Vaccines Distributed</span></div>
+                            <br>
+                            <div class="card-body" id="vaccineDistributionDiv">
+                                <canvas id="vaccineDistribution" height="250"></canvas>
+                    <br>
+                    <br>
+                <div class="card">
+                    <div class="card-body">
+                        Updated on <b id="vaccineDistributionLastUpdate"></b>
+                        
+                    </div>
+                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="col-xl-6">
+                        <div class="card mb-4">
+                            <div class="card-header"><i class="fas fa-chart-bar mr-1"></i><span id="vaccineDistributionByProvince">Vaccines Distributed By Province</span></div>
+                            <div class="card-body" id="vaccineDistributionByProvinceDiv">
+               
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Province</th>
+                                                <th>Moderna</th>
+                                                <th>Pfizer-BioNTech</th>
+                                                <th>AstraZeneca</th>
+                                                <th>Johnson & Johnson</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="vaccineDistributionByProvinceTable"></tbody>
+                                    </table>
+                    <div class="card">
+                    <div class="card-body">
+                                    <i>Delivery and administration data by <i>vaccine product</i> are not updated as frequently as the values reported above, and totals may not match. Administration data by vaccine type is updated each Friday with data up to and including the previous Saturday. Delivery data by <i>vaccine product</i> was last updated on <b id="vaccineDistributionLastUpdate2"></b>.</i>
+                    </div>
+                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <br>
+
+
         </main>
         <footer class="py-4 bg-light mt-auto">
             <div class="container-fluid">

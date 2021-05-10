@@ -330,6 +330,7 @@ $(document).ready(() => {
                 return r.province === pCode;
             });
             pieChart(data, "#vaccineDistribution");
+            $("#vaccineDistributionLastUpdate").text(data.date);
         });
     }
 

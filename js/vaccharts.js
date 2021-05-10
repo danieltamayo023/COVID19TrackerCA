@@ -361,8 +361,8 @@ function pieChart(data, id) {
         type: 'pie',
         chartdata: {
             labels: [
-                'Moderna',
                 'Pfizer-BioNTech',
+                'Moderna',
                 'AstraZeneca',
                 'Johnson & Johnson'
             ],
@@ -370,10 +370,10 @@ function pieChart(data, id) {
                 label: 'My First Dataset',
                 data: [data.pfizer_biontech, data.moderna, data.astrazeneca, data.johnson],
                 backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)',
-                    'rgb(35, 150, 34)'
+                    'rgba(110,117,124,255)',
+                    'rgba(53,58,63,255)',
+                    'rgba(221,217,231,255)',
+                    'rgba(232,233,235,255)',
                 ],
                 hoverOffset: 4
             }]

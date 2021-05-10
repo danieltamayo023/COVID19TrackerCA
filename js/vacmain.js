@@ -316,12 +316,13 @@ $(document).ready(() => {
     $.ajax({
         url: api_url + "vaccines/distribution",
         type: "GET",
+
     }).then(res => {
         var data = res.data;
         pieChart(data[0], "#vaccineDistribution");
-        $("#vaccineDistributionLastUpdate").text(res.last_updated);
         $.ajax({
             url: api_url + "vaccines/distribution/split",
+
             type: "GET",
         }).then(res2 => {
             data[0].country = "Canada";
@@ -408,7 +409,7 @@ function buildProvinceTable(data, provinceData) {
             "'></span>" +
             "<span>" + "<a style='color:black;' href='provincevac.html?p=" + provinceProperties(item.province).code + "'><i>" +  provinceProperties(item.province).name + "</i></a> </span>" +
             "</td>" +
-            "<td data-per-capita='" + vaccinationsPer100000 + "'><i>" + format(item.total_vaccinations) + (item.change_vaccinations ? ("<i>" + " " + displayNewCases(item.change_vaccinations)) : "" + "</i>") + "</i></td>" +
+            "<td data-per-capita='" + vaccinationsPer100000 + "'><i>" + format(item.total_vaccinations) + (item.change_vaccinations ? ("<div>" + " " + displayNewCases(item.change_vaccinations)) : "" + "</i>") + "</i></td>" +
             "<td><i>" + format(item.total_vaccines_distributed) + "</i></td>" +
             "<td><i>" + vaccinationsPercent + "%" + "</i></td>" +
             "<td>" + format(vaccinationsPer100000) + "</td>" +
@@ -430,11 +431,27 @@ function buildVaccineDistributionTable(data) {
         $('#vaccineDistributionByProvinceTable').append(
             "<tr class='provinceRow'>" +
                 "<td>" + (item.country ? "<b>" + item.country + "</b>" : provinceProperties(item.province).name) + "</td>" +
-            "<td>" + (item.moderna ? format(item.moderna) : 0) + (item.moderna_administered ? " <i>(" + format(item.moderna_administered) + " administered)</i>" : "") + "</td>" +
-            "<td>" + (item.pfizer_biontech ? format(item.pfizer_biontech) : 0) + (item.pfizer_biontech_administered ? " <i>(" + format(item.pfizer_biontech_administered) + " administered)</i>" : "") + "</td>" +
-            "<td>" + (item.astrazeneca ? format(item.astrazeneca) : 0) + (item.astrazeneca_administered ? " <i>(" + format(item.astrazeneca_administered) + " administered)</i>" : "") + "</td>" +
-            "<td>" + (item.johnson ? format(item.johnson) : 0) + (item.johnson_administered ? " <i>(" + format(item.johnson_administered) + " administered)</i>" : "") + "</td>" +
+            "<td><span data-toggle='tooltip' title='" + (item.moderna_administered ? "" + format(item.moderna_administered) + " administered" : "") + "'>" + (item.moderna ? format(item.moderna) : 0) + "</span></td>" +
+            "<td><span data-toggle='tooltip' title='" + (item.pfizer_biontech_administered ? "" + format(item.pfizer_biontech_administered) + " administered" : "") + "'>" + (item.pfizer_biontech ? format(item.pfizer_biontech) : 0) + "</span></td>" +
+            "<td><span data-toggle='tooltip' title='" + (item.astrazeneca_administered ? "" + format(item.astrazeneca_administered) + " administered" : "") + "'>" + (item.astrazeneca ? format(item.astrazeneca) : 0) + "</span></td>" +
+            "<td>" + (item.johnson ? format(item.johnson) : 0) + "</td>" +
             "</tr>"
         )
     });
-}
+
+
+$.ajax({
+        url: api_url + "vaccines/distribution/"
+    }).then(res => {
+        var data = res.data[0];
+
+        $("#vaccineDistributionLastUpdate").text(data.latest_date);
+        $("#vaccineDistributionLastUpdate2").text(data.latest_date);
+    });
+
+
+    $('[data-toggle="tooltip"]').tooltip({
+    trigger : 'hover'
+})  
+
+    }

@@ -23,9 +23,9 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@turf/turf@5.1.6/turf.min.js"></script>
 
-    <script type="text/javascript" src="js/config.js?v=5.3.4"></script>
-    <script type="text/javascript" src="js/vaccharts.js?v=5.6.4"></script>
-    <script type="text/javascript" src="js/vacregmain.js?v=9.1.5"></script>
+    <script type="text/javascript" src="js/config.js?v=6.3.4"></script>
+    <script type="text/javascript" src="js/vaccharts.js?v=6.6.4"></script>
+    <script type="text/javascript" src="js/vacregmain.js?v=9.2.5"></script>
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-160029240-1"></script>
@@ -112,6 +112,7 @@
                         <div class="card bg-secondary text-white mb-4">
                             <div class="card-body summary-header-percentVaccinated">
                                 <h1></h1> <b></b>
+                                <!--
                                 <div class="material-switch pull-right">
                                     <div class="switch-label d-inline-block">Eligible <span data-toggle='tooltip' title='Two doses are required to vaccinate an individual; this value indicates the approximate number of people who have received at least one dose.'><i class="far fa-question-circle"></i></span></div>
                                     <div class="d-inline-block">
@@ -119,6 +120,7 @@
                                         <label for="popDoseToggle" class="label-success"></label>
                                     </div>
                                 </div>
+                            -->
                             </div>
                         </div>
                     </div>
@@ -266,10 +268,17 @@
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="card mb-4 vac-dist">
-                            <div class="card-header"><i class="fas fa-chart-area mr-1"></i><span id="newCasesByDay"><span class="display-province"></span> Vaccine Distribution</span></div>
+                            <div class="card-header"><i class="fas fa-chart-area mr-1"></i><span id="newCasesByDay"><span class="display-province"></span> Vaccines Distributed</span></div>
                             <div class="card-body" id="vaccineDistributionDiv">
                                 <div class="col-xl-6 offset-xl-3">
                                     <canvas id="vaccineDistribution" height="200"></canvas>
+                                    <br>
+                                    <br>
+                                    <div class="card">
+                    <div class="card-body">
+                                    <i>Delivery data by <i>vaccine product</i> was last updated on <b id="vaccineDistributionLastUpdate"></b>.</i>
+                    </div>
+                    </div>
                                 </div>
                                 
                             </div>

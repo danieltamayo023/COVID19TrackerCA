@@ -48,6 +48,7 @@ $(document).ready(() => {
         peopleVaccinated = data.total_vaccinations - data.total_vaccinated;
         twoDoses = data.total_vaccinated;
         percentVaccinated = Math.floor((data.total_vaccinations - data.total_vaccinated) / canadaPopulation * 100) / 100;
+        percentFullyVaccinated = Math.floor(data.total_vaccinated / canadaPopulation * 100) / 100;
         vaccinationsChange = data.change_vaccinations;
         vaccinesDistributed = data.total_vaccines_distributed;
 
@@ -82,6 +83,8 @@ $(document).ready(() => {
         $(".summary-header-recoveries > b").text(displayNewCases(data.change_recoveries));
         $(".summary-header-percentVaccinated > h1").text((((data.total_vaccinations - data.total_vaccinated) / 38008005) * 100).toFixed(3) + "%");
         $(".summary-header-percentVaccinated > b").text("of the Canadian population has received at least one dose");
+        $(".summary-header-percentFullyVaccinated > h1").text(((data.total_vaccinated / 38008005) * 100).toFixed(3) + "%");
+        $(".summary-header-percentFullyVaccinated > b").text("of the Canadian population is fully vaccinated");
         $(".summary-header-vaccinations > h1").text(format(data.total_vaccinations) + " doses administered");
         $(".summary-header-vaccinations > b").text(displayNewCases(data.change_vaccinations));
         $(".summary-header-pplVac > h1").text(data.total_vaccinations);
@@ -118,7 +121,7 @@ $(document).ready(() => {
         $('#totalVaccinationsDistCanada').text(data.total_vaccines_distributed);
         $('#totalVaccinationsPercentCanada').text((((data.total_vaccinations) / (data.total_vaccines_distributed)) * 100).toFixed(1) + "%")
         $('#totalVaccinationsChangeCanada').text(data.change_vaccinations);
-        $('#totalVaccinatedCanada').text(data.total_vaccinated);
+        $('#totalVaccinatedCanada').text(data.total_vaccinated + (data.change_vaccinated ? (" " + displayNewCases(data.change_vaccinated)) : ""));
         $('#vaccinatedPerCanada').text(vaccinationsPer100000);
         $('#infectedPerCanada').text(casesPer100000);
     });
@@ -414,7 +417,7 @@ function buildProvinceTable(data, provinceData) {
             "<td><i>" + format(item.total_vaccines_distributed) + "</i></td>" +
             "<td><i>" + vaccinationsPercent + "%" + "</i></td>" +
             "<td>" + format(vaccinationsPer100000) + "</td>" +
-            "<td><i>" + format(itemTotalVaccinated) + "</i></td>" +
+            "<td><i>" + format(itemTotalVaccinated) + (item.change_vaccinated ? ("<div>" + " " + displayNewCases(item.change_vaccinated)) : "" + "</i>") + "</i></td>" +
             "</tr>"
         )
 

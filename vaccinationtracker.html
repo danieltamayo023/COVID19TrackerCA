@@ -24,10 +24,10 @@
     <script src="https://cdn.jsdelivr.net/npm/@turf/turf@5.1.6/turf.min.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css" rel="stylesheet" />
 
-    <script type="text/javascript" src="js/config.js?v=6.7.4"></script>
-    <script type="text/javascript" src="js/vacmap.js?v=6.5.4"></script>
-    <script type="text/javascript" src="js/vaccharts.js?v=6.6.4"></script>
-    <script type="text/javascript" src="js/vacmain.js?v=9.4.5"></script>
+    <script type="text/javascript" src="js/config.js?v=6.9.0"></script>
+    <script type="text/javascript" src="js/vacmap.js?v=6.8.0"></script>
+    <script type="text/javascript" src="js/vaccharts.js?v=6.8.0"></script>
+    <script type="text/javascript" src="js/vacmain.js?v=9.7.2"></script>
 
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -126,6 +126,22 @@
                     <div class="col-md">
                         <div class="card bg-secondary text-white mb-4">
                             <div class="card-body summary-header-percentVaccinated">
+                                <h1></h1> <b></b>
+                                <!-- <div class="material-switch pull-right">
+                                        <div class="switch-label d-inline-block">Eligible <span data-toggle='tooltip' title='Two doses are required to vaccinate an individual; this value indicates the approximate number of people who have received at least one dose.'><i class="far fa-question-circle"></i></span></div>
+                                        <div class="d-inline-block">
+                                            <input id="popDoseToggle" name="popDoseToggle" type="checkbox" />
+                                            <label for="popDoseToggle" class="label-success"></label>
+                                        </div>
+                                    </div>
+                                -->
+                            </div>
+                        </div>
+                    </div>
+
+                                        <div class="col-md">
+                        <div class="card bg-secondary text-white mb-4">
+                            <div class="card-body summary-header-percentFullyVaccinated">
                                 <h1></h1> <b></b>
                                 <!-- <div class="material-switch pull-right">
                                         <div class="switch-label d-inline-block">Eligible <span data-toggle='tooltip' title='Two doses are required to vaccinate an individual; this value indicates the approximate number of people who have received at least one dose.'><i class="far fa-question-circle"></i></span></div>
@@ -324,8 +340,10 @@
                                 <br>
                                 <br>
                                 <div class="card">
-                                    <div class="card-body">
-                                        Updated on <b id="vaccineDistributionLastUpdate"></b>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <i>Administration data by vaccine product updated Fridays with data up to and including the previous Saturday. Delivery data by <i>vaccine product</i> updated <b id="vaccineDistributionLastUpdate"></b>.</i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -340,7 +358,7 @@
                                     <span class="mx-2 d-none">
                                         <label><input type="checkbox" onclick="toggleChartSetting(this)" />Last 3 Weeks</label>
                                     </span>
-                                    <span class="mx-2">
+                                    <span class="mx-2 d-none">
                                         <label><input type="checkbox" onclick="toggleChartSetting(this)" />Logarithmic Scale</label>
                                     </span>
                                     <span class="mx-2 d-none">

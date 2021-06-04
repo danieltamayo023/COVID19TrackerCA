@@ -334,6 +334,57 @@ $(document).ready(() => {
             buildVaccineDistributionTable(res2.data);
         });
     });
+	
+	$.ajax({
+        url: api_url + "vaccines/age-groups?after=2021-04-24",
+        type: "GET",
+
+    }).then(res => {
+		lineGraph2(res.data, "#ageGroupChart", false, "full");
+		//lineGraph2(res.data, "#ageGroupPartialChart", false, "partial");
+		lineGraph2(res.data, "#ageGroupAtleast1Chart", false, "atleast1");
+		barGraph4(res.data[res.data.length - 1].data, "#ageGroupBarCanvas");
+		
+		var keys = ["18-29", "30-39", "40-49", "50-59", "60-69", "70-79", "80+"];
+		var atleast1Sum = 0, fullSum = 0;
+		$.each(keys, function(i, v){
+			var aData = JSON.parse(res.data[res.data.length - 1].data);
+			atleast1Sum += aData[v]["atleast1"];
+			fullSum += aData[v]["full"];
+		});
+		
+		$(".summary-header-percentVaccinated-ageGroup > h1").text((((atleast1Sum) / 30754887) * 100).toFixed(3) + "%");
+        $(".summary-header-percentVaccinated-ageGroup > b").text("of adults (18+) in Canada have received at least one dose");
+        $(".summary-header-percentFullyVaccinated-ageGroup > h1").text(((fullSum / 30754887) * 100).toFixed(3) + "%");
+        $(".summary-header-percentFullyVaccinated-ageGroup > b").text("of adults (18+) in Canada are fully vaccinated");
+    });
+	
+	$.ajax({
+        url: api_url + "vaccines/age-groups/split?after=2021-04-24",
+        type: "GET",
+    }).then(res => {
+		var dates = [], provinceCodes = [];
+		$.each(res.data, function(i, v){
+			dates.push(new Date(v.date));
+			provinceCodes.push(v.province);
+		});
+		
+		var maxDate = dateToYMD(new Date(Math.max.apply(null,dates)));
+		var provinces = provinceCodes.filter(onlyUnique);
+		var _data = res.data.filter(function(v){
+			return v.date == maxDate && provinces.indexOf(v.province)
+		});
+		_data.sort(function(a, b){ 
+			if (a.province < b.province) {
+				return -1;
+			}
+			if (b.province > a.province) {
+				return 1;
+			}
+			return 0;
+		});
+		buildAgeGroupTable(_data);
+    });
 
     $(window).on("resize", function () {
         $('#totalCasesProvinceTable .regionTable').each((index, regionsRow) => {
@@ -351,6 +402,17 @@ $(document).ready(() => {
         });
     });
 });
+
+function onlyUnique(value, index, self) {
+  return self.indexOf(value) === index;
+}
+
+function dateToYMD(date) {
+    var d = date.getDate();
+    var m = date.getMonth() + 1; //Month from 0 to 11
+    var y = date.getFullYear();
+    return "" + y + "-" + m.toString().padStart(2, "0") + "-" + d.toString().padStart(2, "0");
+}
 
 function buildProvinceTable(data, provinceData) {
     data.forEach(function (item) {
@@ -421,9 +483,6 @@ function buildProvinceTable(data, provinceData) {
             "</tr>"
         )
 
-
-
-
         $('[data-toggle="tooltip"]').tooltip({
             template: '<div class="tooltip province-status-tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'
         });
@@ -457,5 +516,26 @@ function buildVaccineDistributionTable(data) {
     $('[data-toggle="tooltip"]').tooltip({
         trigger: 'hover'
     })
+
+}
+
+function buildAgeGroupTable(data) {
+    data.forEach(function (item) {
+		var aData = JSON.parse(item.data);
+        $('#ageGroupTable').append(
+            "<tr class='ageGroupRow'>" +
+            "<td>" + provinceProperties(item.province).name + "</td>" +
+			"<td>" + format((aData["0-17"]["full"] ? aData["0-17"]["full"] : 0) + (aData["0-17"]["atleast1"] ? aData["0-17"]["atleast1"] : 0)) + "</td>" +
+			"<td>" + format((aData["18-29"]["full"] ? aData["18-29"]["full"] : 0) + (aData["18-29"]["atleast1"] ? aData["18-29"]["atleast1"] : 0)) + "</td>" +
+			"<td>" + format((aData["30-39"]["full"] ? aData["30-39"]["full"] : 0) + (aData["30-39"]["atleast1"] ? aData["30-39"]["atleast1"] : 0)) + "</td>" +
+			"<td>" + format((aData["40-49"]["full"] ? aData["40-49"]["full"] : 0) + (aData["40-49"]["atleast1"] ? aData["40-49"]["atleast1"] : 0)) + "</td>" +
+			"<td>" + format((aData["50-59"]["full"] ? aData["50-59"]["full"] : 0) + (aData["50-59"]["atleast1"] ? aData["50-59"]["atleast1"] : 0)) + "</td>" +
+			"<td>" + format((aData["60-69"]["full"] ? aData["60-69"]["full"] : 0) + (aData["60-69"]["atleast1"] ? aData["60-69"]["atleast1"] : 0)) + "</td>" +
+			"<td>" + format((aData["70-79"]["full"] ? aData["70-79"]["full"] : 0) + (aData["70-79"]["atleast1"] ? aData["70-79"]["atleast1"] : 0)) + "</td>" +
+			"<td>" + format((aData["80+"]["full"] ? aData["80+"]["full"] : 0) + (aData["80+"]["atleast1"] ? aData["80+"]["atleast1"] : 0)) + "</td>" +
+            "</tr>"
+        )
+    });
+
 
 }

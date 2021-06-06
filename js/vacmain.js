@@ -363,17 +363,17 @@ $(document).ready(() => {
         url: api_url + "vaccines/age-groups/split?after=2021-04-24",
         type: "GET",
     }).then(res => {
-		var dates = [], provinceCodes = [];
+		var provinceCodes = [];
 		$.each(res.data, function(i, v){
-			dates.push(new Date(v.date));
 			provinceCodes.push(v.province);
 		});
 		
-		var maxDate = dateToYMD(new Date(Math.max.apply(null,dates)));
+		var maxDate = res.data[res.data.length - 1].date;
 		var provinces = provinceCodes.filter(onlyUnique);
 		var _data = res.data.filter(function(v){
 			return v.date == maxDate && provinces.indexOf(v.province)
 		});
+		
 		_data.sort(function(a, b){ 
 			if (a.province < b.province) {
 				return -1;

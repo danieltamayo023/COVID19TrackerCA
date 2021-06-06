@@ -338,10 +338,37 @@ $(document).ready(() => {
             $("#vaccineDistributionLastUpdate").text(data.date);
             $("#vaccineDistributionLastUpdate2").text(data.date);
         });
+		
+		$.ajax({
+			url: api_url + "vaccines/age-groups/province/" + pCode + "?after=2021-04-24",
+			type: "GET",
+		}).then(res => {
+			lineGraph2(res.data, "#ageGroupChart", false, "full");
+			lineGraph2(res.data, "#ageGroupAtleast1Chart", false, "atleast1");
+			barGraph4(res.data[res.data.length - 1].data, "#ageGroupBarCanvas");
+			
+			if (provinceAgeGroup[pCode].boxEnabled) {
+				var keys = ["18-29", "30-39", "40-49", "50-59", "60-69", "70-79", "80+"];
+				var atleast1Sum = 0, fullSum = 0;
+				$.each(keys, function(i, v){
+					var aData = JSON.parse(res.data[res.data.length - 1].data);
+					atleast1Sum += aData[v]["atleast1"];
+					fullSum += aData[v]["full"];
+				});
+				
+				$(".summary-header-percentVaccinated-ageGroup > h1").text((((atleast1Sum) / provinceAgeGroup[pCode].population) * 100).toFixed(3) + "%");
+				$(".summary-header-percentVaccinated-ageGroup > b").text("of adults (18+) in " + provinceProperties(pCode).name + " have received at least one dose");
+				$(".summary-header-percentFullyVaccinated-ageGroup > h1").text(((fullSum / provinceAgeGroup[pCode].population) * 100).toFixed(3) + "%");
+				$(".summary-header-percentFullyVaccinated-ageGroup > b").text("of adults (18+) in " + provinceProperties(pCode).name + " are fully vaccinated");
+			} else {
+				$(".summary-header-percentVaccinated-ageGroup").parents(".row").hide();
+				$(".summary-header-percentFullyVaccinated-ageGroup").parents(".row").hide();
+			}
+		});
 
-            $('[data-toggle="tooltip"]').tooltip({
-        trigger: 'hover'
-    })
+		$('[data-toggle="tooltip"]').tooltip({
+			trigger: 'hover'
+		});
     }
 
     $(window).on("resize", function () {

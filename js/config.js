@@ -3,6 +3,60 @@ var url = window.location.protocol + '//' + window.location.hostname + '/';
 // api  
 var api_url = "https://api.covid19tracker.ca/";
 var devapi_url = "https://api.covid19tracker.ca/";
+var provinceAgeGroup = {
+	"NL": {
+		population: 436312,
+		boxEnabled: false
+	},
+	"PE": {
+		population: 129799,
+		boxEnabled: true
+	},
+	"NS": {
+		population: 813389,
+		boxEnabled: true
+	},
+	"NB": {
+		population: 645289,
+		boxEnabled: true
+	},
+	"QC": {
+		population: 6972707,
+		boxEnabled: true
+	},
+	"ON": {
+		population: 11971129,
+		boxEnabled: true
+	},
+	"MB": {
+		population: 1068553,
+		boxEnabled: true
+	},
+	"SK": {
+		population: 905623,
+		boxEnabled: true
+	},
+	"AB": {
+		population: 3445146,
+		boxEnabled: true
+	},
+	"BC": {
+		population: 4273972,
+		boxEnabled: true
+	},
+	"YT": {
+		population: 33660,
+		boxEnabled: true
+	},
+	"NT": {
+		population: 34430,
+		boxEnabled: true
+	},
+	"NU": {
+		population: 24878,
+		boxEnabled: true
+	},
+};
 
 var provinceSources = {
     ON: "https://covid19tracker.ca/sources.html",

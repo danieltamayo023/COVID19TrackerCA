@@ -98,7 +98,7 @@ function lineGraph(data, id, flag, type) {
 }
 
 // used for age group
-function lineGraph2(data, id, type, info) {
+function lineGraph2(data, id, type, info, r) {
     var name = [];
     var allData = {
         "0-17": [],
@@ -123,49 +123,49 @@ function lineGraph2(data, id, type, info) {
 		var aData = JSON.parse(data[i].data);
 
 		if (typeof aData["0-17"] !== "undefined") {
-			allData["0-17"].push(aData["0-17"][info]);
+			allData["0-17"].push(parseFloat(((aData["0-17"][info] / ageGroupPopulation[r]["0-17"]) * 100).toFixed(2)));
 		} else {
 			allData["0-17"].push(0);
 		}
 		
 		if (typeof aData["18-29"] !== "undefined") {
-			allData["18-29"].push(aData["18-29"][info]);
+			allData["18-29"].push(parseFloat(((aData["18-29"][info] / ageGroupPopulation[r]["18-29"]) * 100).toFixed(2)));
 		} else {
 			allData["18-29"].push(0);
 		}
 		
 		if (typeof aData["30-39"] !== "undefined") {
-			allData["30-39"].push(aData["30-39"][info]);
+			allData["30-39"].push(parseFloat(((aData["30-39"][info] / ageGroupPopulation[r]["30-39"]) * 100).toFixed(2)));
 		} else {
 			allData["30-39"].push(0);
 		}
 		
 		if (typeof aData["40-49"] !== "undefined") {
-			allData["40-49"].push(aData["40-49"][info]);
+			allData["40-49"].push(parseFloat(((aData["40-49"][info] / ageGroupPopulation[r]["40-49"]) * 100).toFixed(2)));
 		} else {
 			allData["40-49"].push(0);
 		}
 		
 		if (typeof aData["50-59"] !== "undefined") {
-			allData["50-59"].push(aData["50-59"][info]);
+			allData["50-59"].push(parseFloat(((aData["50-59"][info] / ageGroupPopulation[r]["50-59"]) * 100).toFixed(2)));
 		} else {
 			allData["50-59"].push(0);
 		}
 		
 		if (typeof aData["60-69"] !== "undefined") {
-			allData["60-69"].push(aData["60-69"][info]);
+			allData["60-69"].push(parseFloat(((aData["60-69"][info] / ageGroupPopulation[r]["60-69"]) * 100).toFixed(2)));
 		} else {
 			allData["60-69"].push(0);
 		}
 		
 		if (typeof aData["70-79"] !== "undefined") {
-			allData["70-79"].push(aData["70-79"][info]);
+			allData["70-79"].push(parseFloat(((aData["70-79"][info] / ageGroupPopulation[r]["70-79"]) * 100).toFixed(2)));
 		} else {
 			allData["70-79"].push(0);
 		}
 		
 		if (typeof aData["80+"] !== "undefined") {
-			allData["80+"].push(aData["80+"][info]);
+			allData["80+"].push(parseFloat(((aData["80+"][info] / ageGroupPopulation[r]["80+"]) * 100).toFixed(2)));
 		} else {
 			allData["80+"].push(0);
 		}
@@ -474,7 +474,7 @@ function barGraph3(data, id) {
 }
 
 // bar graph for age groups
-function barGraph4(data, id) {
+function barGraph4(data, id, r) {
     var keys = ["0-17", "18-29", "30-39", "40-49", "50-59", "60-69", "70-79", "80+"];
     var name = ["0-17", "18-29", "30-39", "40-49", "50-59", "60-69", "70-79", "80+"];
     var allData = {
@@ -485,8 +485,8 @@ function barGraph4(data, id) {
     keys.forEach(function (k) {
 		var aData = JSON.parse(data);
 		
-        allData["partial"].push(aData[k]["partial"]);
-        allData["full"].push(aData[k]["full"]);
+        allData["partial"].push(((aData[k]["partial"] / ageGroupPopulation[r][k]) * 100).toFixed(2));
+        allData["full"].push(((aData[k]["full"] / ageGroupPopulation[r][k]) * 100).toFixed(2));
     });
 
     var graphConfig = {
@@ -686,4 +686,96 @@ function pieChart(data, id) {
     };
 
     draw(config);
+}
+
+function updateAgeGroupChart(graphContainer, t, d, info) {
+    var graph = graphContainer.data("chart");
+    var originalData = graphContainer.data("originalData");
+	var data = $.extend(true, {}, originalData);
+
+	if (t) {
+		var name = [];
+		data.datasets.forEach(dataset => {
+			dataset.data = [];
+		});
+		
+		for (var i in d) {
+			var aData = JSON.parse(d[i].data);
+
+			if (typeof aData["0-17"] !== "undefined") {
+				data.datasets[0].data.push(aData["0-17"][info]);
+			} else {
+				data.datasets[0].data.push(0);
+			}
+			
+			if (typeof aData["18-29"] !== "undefined") {
+				data.datasets[1].data.push(aData["18-29"][info]);
+			} else {
+				data.datasets[1].data.push(0);
+			}
+			
+			if (typeof aData["30-39"] !== "undefined") {
+				data.datasets[2].data.push(aData["30-39"][info]);
+			} else {
+				data.datasets[2].data.push(0);
+			}
+			
+			if (typeof aData["40-49"] !== "undefined") {
+				data.datasets[3].data.push(aData["40-49"][info]);
+			} else {
+				data.datasets[3].data.push(0);
+			}
+			
+			if (typeof aData["50-59"] !== "undefined") {
+				data.datasets[4].data.push(aData["50-59"][info]);
+			} else {
+				data.datasets[4].data.push(0);
+			}
+			
+			if (typeof aData["60-69"] !== "undefined") {
+				data.datasets[5].data.push(aData["60-69"][info]);
+			} else {
+				data.datasets[5].data.push(0);
+			}
+			
+			if (typeof aData["70-79"] !== "undefined") {
+				data.datasets[6].data.push(aData["70-79"][info]);
+			} else {
+				data.datasets[6].data.push(0);
+			}
+			
+			if (typeof aData["80+"] !== "undefined") {
+				data.datasets[7].data.push(aData["80+"][info]);
+			} else {
+				data.datasets[7].data.push(0);
+			}
+		}
+	}
+	
+	graph.config.data = data;
+    graph.update();
+}
+
+function updateAgeGroupBar(graphContainer, t, d) {
+    var graph = graphContainer.data("chart");
+    var originalData = graphContainer.data("originalData");
+	var data = $.extend(true, {}, originalData);
+
+	if (t) {
+		var keys = ["0-17", "18-29", "30-39", "40-49", "50-59", "60-69", "70-79", "80+"];
+		
+		data.datasets.forEach(dataset => {
+			dataset.data = [];
+		});
+
+		$.each(keys, function(i, k){
+			var aData = JSON.parse(d);
+			
+			data.datasets[0].data.push(aData[k]["partial"]);
+			data.datasets[1].data.push(aData[k]["full"]);
+		});
+	}
+	
+	graph.config.data = data;
+    graph.update();
 }

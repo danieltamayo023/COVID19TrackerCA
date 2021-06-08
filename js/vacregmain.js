@@ -13,6 +13,10 @@ var regions = [];
 var noDataText = "";
 var totalPopulationVaccinated = 0;
 var totalPopulationVaccinated16 = 0;
+var totalPopulationVaccinated2 = 0;
+var totalPopulationVaccinated216 = 0;
+var adults = 0;
+var adultsFull = 0;
 var populationObj = [{
     "province": "AB",
     "population": 3761130
@@ -143,6 +147,9 @@ $(document).ready(() => {
             return "";
         province = provinces.find(function (_p) { return pCode === _p.code; });
         var population = province.population;
+        var date1 = province.updated_at;
+        var date = date1.substring(0, date1.length - 17);
+
         var population16 = populationObj.find(function (_p) { return pCode === _p.province; }).population;
         var pText = province.name;
         noDataText = pText + " does not release regional vaccination data";
@@ -190,6 +197,19 @@ $(document).ready(() => {
         }
     });
 
+    $("#popDose2Toggle").on('change', function () {
+        var checked = $("#popDose2Toggle").prop("checked");
+        if (checked) {
+            $(".summary-header-percentVaccinated2 > h1").text((totalPopulationVaccinated216).toFixed(3) + "%");
+            $(".summary-header-percentVaccinated2 > b").text("of people 12+ in " + pText + " are fully vaccinated");
+
+        }
+        else {
+            $(".summary-header-percentVaccinated2 > h1").text((totalPopulationVaccinated2).toFixed(3) + "%");
+            $(".summary-header-percentVaccinated2 > b").text("of all people in " + pText + " are fully vaccinated");
+        }
+    });
+
     $(".summary-arrow").click(function () {
         var container = $(this).next();
         container.empty();
@@ -229,6 +249,9 @@ $(document).ready(() => {
             vaccinesDistributed = data.total_vaccines_distributed;
             totalPopulationVaccinated = ((data.total_vaccinations - data.total_vaccinated) / population) * 100;
             totalPopulationVaccinated16 = ((data.total_vaccinations - data.total_vaccinated) / population16) * 100;
+            totalPopulationVaccinated2 = ((data.total_vaccinated) / population) * 100;
+            totalPopulationVaccinated216 = ((data.total_vaccinated) / population16) * 100;
+            date = data.last_updated;
 
             // update timestamp
             $("#updateTime").text("As of " + moment(res.last_updated).format("dddd [at] h:mm a [CST, ]"));
@@ -250,6 +273,8 @@ $(document).ready(() => {
             $(".summary-header-recoveries > b").text(displayNewCases(data.change_recoveries));
             $(".summary-header-percentVaccinated > h1").text((((data.total_vaccinations - data.total_vaccinated) / population) * 100).toFixed(3) + "%");
             $(".summary-header-percentVaccinated > b").text("of all people in " + pText + " have received at least one dose");
+            $(".summary-header-percentVaccinated2 > h1").text((((data.total_vaccinated) / population) * 100).toFixed(3) + "%");
+            $(".summary-header-percentVaccinated2 > b").text("of all people in " + pText + " are fully vaccinated");
             $(".summary-header-vaccinations > h1").text(format(data.total_vaccinations) + " doses administered");
             $(".summary-header-vaccinations > b").text(displayNewCases(data.change_vaccinations));
             $(".summary-header-pplVac > h1").text(data.total_vaccinations);
@@ -338,33 +363,45 @@ $(document).ready(() => {
             $("#vaccineDistributionLastUpdate").text(data.date);
             $("#vaccineDistributionLastUpdate2").text(data.date);
         });
+
+
+
+        
 		
 		$.ajax({
-			url: api_url + "vaccines/age-groups/province/" + pCode + "?after=2021-04-24",
+			url: api_url + "vaccines/reports/province/" + pCode + "?after=" + date,
 			type: "GET",
 		}).then(res => {
-			lineGraph2(res.data, "#ageGroupChart", false, "full");
-			lineGraph2(res.data, "#ageGroupAtleast1Chart", false, "atleast1");
-			barGraph4(res.data[res.data.length - 1].data, "#ageGroupBarCanvas");
 			
 			if (provinceAgeGroup[pCode].boxEnabled) {
-				var keys = ["18-29", "30-39", "40-49", "50-59", "60-69", "70-79", "80+"];
-				var atleast1Sum = 0, fullSum = 0;
-				$.each(keys, function(i, v){
-					var aData = JSON.parse(res.data[res.data.length - 1].data);
-					atleast1Sum += aData[v]["atleast1"];
-					fullSum += aData[v]["full"];
-				});
+                var data = res.data[0];
+
 				
-				$(".summary-header-percentVaccinated-ageGroup > h1").text((((atleast1Sum) / provinceAgeGroup[pCode].population) * 100).toFixed(3) + "%");
+				
+				$(".summary-header-percentVaccinated-ageGroup > h1").text((((data.total_adults_vaccinations - data.total_adults_vaccinated) / provinceAgeGroup[pCode].population) * 100).toFixed(3) + "%");
 				$(".summary-header-percentVaccinated-ageGroup > b").text("of adults (18+) in " + provinceProperties(pCode).name + " have received at least one dose");
-				$(".summary-header-percentFullyVaccinated-ageGroup > h1").text(((fullSum / provinceAgeGroup[pCode].population) * 100).toFixed(3) + "%");
+				$(".summary-header-percentFullyVaccinated-ageGroup > h1").text(((data.total_adults_vaccinated / provinceAgeGroup[pCode].population) * 100).toFixed(3) + "%");
 				$(".summary-header-percentFullyVaccinated-ageGroup > b").text("of adults (18+) in " + provinceProperties(pCode).name + " are fully vaccinated");
 			} else {
-				$(".summary-header-percentVaccinated-ageGroup").parents(".row").hide();
-				$(".summary-header-percentFullyVaccinated-ageGroup").parents(".row").hide();
+				$(".summary-header-percentVaccinated-ageGroup").parents(".card-body").hide();
+				$(".summary-header-percentFullyVaccinated-ageGroup").parents(".card-body").hide();
 			}
 		});
+
+
+
+        $.ajax({
+            url: api_url + "vaccines/age-groups/province/" + pCode + "?after=2021-04-24",
+            type: "GET",
+        }).then(res => {
+            lineGraph2(res.data, "#ageGroupChart", false, "full");
+            lineGraph2(res.data, "#ageGroupAtleast1Chart", false, "atleast1");
+            barGraph4(res.data[res.data.length - 1].data, "#ageGroupBarCanvas");
+        });
+
+
+
+
 
 		$('[data-toggle="tooltip"]').tooltip({
 			trigger: 'hover'

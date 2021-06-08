@@ -53,7 +53,9 @@ $(document).ready(() => {
         vaccinesDistributed = data.total_vaccines_distributed;
 
         totalPopulationVaccinated = ((data.total_vaccinations - data.total_vaccinated) / 38008005) * 100;
-        totalPopulationVaccinated16 = ((data.total_vaccinations - data.total_vaccinated) / 31568102) * 100;
+        totalPopulationVaccinated16 = ((data.total_vaccinations - data.total_vaccinated) / 33198268) * 100;
+        totalPopulationFullVaccinated = ((data.total_vaccinated) / 38008005) * 100;
+        totalPopulationFullVaccinated16 = ((data.total_vaccinated) / 33198268) * 100;
 
         // update timestamp
 
@@ -207,12 +209,25 @@ $(document).ready(() => {
         var checked = $("#popDoseToggle").prop("checked");
         if (checked) {
             $(".summary-header-percentVaccinated > h1").text((totalPopulationVaccinated16).toFixed(3) + "%");
-            $(".summary-header-percentVaccinated > b").text("of Canadians 16+ have received at least one dose");
+            $(".summary-header-percentVaccinated > b").text("of Canadians 12+ have received at least one dose");
 
         }
         else {
             $(".summary-header-percentVaccinated > h1").text((totalPopulationVaccinated).toFixed(3) + "%");
             $(".summary-header-percentVaccinated > b").text("of the Canadian population has received at least one dose");
+        }
+    });
+
+       $("#popDoseToggle1").on('change', function () {
+        var checked = $("#popDoseToggle1").prop("checked");
+        if (checked) {
+            $(".summary-header-percentFullyVaccinated > h1").text((totalPopulationFullVaccinated16).toFixed(3) + "%");
+            $(".summary-header-percentFullyVaccinated > b").text("of Canadians 12+ are fully vaccinated");
+
+        }
+        else {
+            $(".summary-header-percentFullyVaccinated > h1").text((totalPopulationFullVaccinated).toFixed(3) + "%");
+            $(".summary-header-percentFullyVaccinated > b").text("of the Canadian population is fully vaccinated");
         }
     });
 
@@ -494,9 +509,9 @@ function buildVaccineDistributionTable(data) {
         $('#vaccineDistributionByProvinceTable').append(
             "<tr class='provinceRow'>" +
             "<td>" + (item.country ? "<b>" + item.country + "</b>" : provinceProperties(item.province).name) + "</td>" +
-            "<td><span data-toggle='tooltip' title='" + (item.moderna_administered ? "" + format(item.moderna_administered) + " administered" : "") + "'>" + (item.moderna ? format(item.moderna) : 0) + "</span></td>" +
-            "<td><span data-toggle='tooltip' title='" + (item.pfizer_biontech_administered ? "" + format(item.pfizer_biontech_administered) + " administered" : "") + "'>" + (item.pfizer_biontech ? format(item.pfizer_biontech) : 0) + "</span></td>" +
-            "<td><span data-toggle='tooltip' title='" + (item.astrazeneca_administered ? "" + format(item.astrazeneca_administered) + " administered" : "") + "'>" + (item.astrazeneca ? format(item.astrazeneca) : 0) + "</span></td>" +
+            "<td><span data-toggle='tooltip1' title='" + (item.moderna_administered ? "" + format(item.moderna_administered) + " administered" : "") + "'>" + (item.moderna ? format(item.moderna) : 0) + "</span></td>" +
+            "<td><span data-toggle='tooltip1' title='" + (item.pfizer_biontech_administered ? "" + format(item.pfizer_biontech_administered) + " administered" : "") + "'>" + (item.pfizer_biontech ? format(item.pfizer_biontech) : 0) + "</span></td>" +
+            "<td><span data-toggle='tooltip1' title='" + (item.astrazeneca_administered ? "" + format(item.astrazeneca_administered) + " administered" : "") + "'>" + (item.astrazeneca ? format(item.astrazeneca) : 0) + "</span></td>" +
             "<td>" + (item.johnson ? format(item.johnson) : 0) + "</td>" +
             "</tr>"
         )
@@ -511,7 +526,6 @@ function buildVaccineDistributionTable(data) {
         $("#vaccineDistributionLastUpdate").text(data.latest_date);
         $("#vaccineDistributionLastUpdate2").text(data.latest_date);
     });
-
 
     $('[data-toggle="tooltip"]').tooltip({
         trigger: 'hover'
@@ -536,6 +550,8 @@ function buildAgeGroupTable(data) {
             "</tr>"
         )
     });
+
+
 
 
 }

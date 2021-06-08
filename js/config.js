@@ -10,19 +10,19 @@ var provinceAgeGroup = {
 	},
 	"PE": {
 		population: 129799,
-		boxEnabled: true
+		boxEnabled: false
 	},
 	"NS": {
 		population: 813389,
-		boxEnabled: true
+		boxEnabled: false
 	},
 	"NB": {
 		population: 645289,
-		boxEnabled: true
+		boxEnabled: false
 	},
 	"QC": {
 		population: 6972707,
-		boxEnabled: true
+		boxEnabled: false
 	},
 	"ON": {
 		population: 11971129,
@@ -30,31 +30,31 @@ var provinceAgeGroup = {
 	},
 	"MB": {
 		population: 1068553,
-		boxEnabled: true
+		boxEnabled: false
 	},
 	"SK": {
 		population: 905623,
-		boxEnabled: true
+		boxEnabled: false
 	},
 	"AB": {
 		population: 3445146,
-		boxEnabled: true
+		boxEnabled: false
 	},
 	"BC": {
 		population: 4273972,
-		boxEnabled: true
+		boxEnabled: false
 	},
 	"YT": {
 		population: 33660,
-		boxEnabled: true
+		boxEnabled: false
 	},
 	"NT": {
 		population: 34430,
-		boxEnabled: true
+		boxEnabled: false
 	},
 	"NU": {
 		population: 24878,
-		boxEnabled: true
+		boxEnabled: false
 	},
 };
 

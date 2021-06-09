@@ -176,6 +176,7 @@ function lineGraph2(data, id, type, info, r) {
         graphTarget: $(id),
         type: 'line',
         unit: 'date',
+		isPercent: true,
         chartdata: {
             labels: name,
             datasets: [
@@ -496,7 +497,6 @@ function barGraph4(data, id, r) {
         chartdata: {
             labels: name,
             datasets: [
-
                 {
                     label: "Partial",
                     backgroundColor: "#D3D3D3",
@@ -513,7 +513,8 @@ function barGraph4(data, id, r) {
                 }
             ]
         },
-        ticks: 15
+        ticks: 15,
+		isPercent: true
     }
 
     // renders the graph
@@ -547,7 +548,10 @@ function draw(graphConfig) {
                 yAxes: [{
                     ticks: {
                         min: 0,
-                        maxTicksLimit: 5
+                        maxTicksLimit: 5,
+						callback: function(value, index, values) {
+							return value + (typeof graphConfig.isPercent !== "undefined" && graphConfig.isPercent ? "%" : "");
+						}
                     },
                     gridLines: {
                         color: "rgba(0, 0, 0, .125)",
@@ -564,6 +568,7 @@ function draw(graphConfig) {
     graphConfig.graphTarget.data("chart", chart);
     graphConfig.graphTarget.data("originalData", graphConfig.chartdata);
 }
+
 
 function toggleChartSetting(el) {
     var isChecked = $(el)[0].checked;
@@ -699,6 +704,10 @@ function updateAgeGroupChart(graphContainer, t, d, info) {
 			dataset.data = [];
 		});
 		
+		graph.options.scales.yAxes[0].ticks.callback = function(value, index, values) {
+			return value;
+		}
+		
 		for (var i in d) {
 			var aData = JSON.parse(d[i].data);
 
@@ -750,6 +759,10 @@ function updateAgeGroupChart(graphContainer, t, d, info) {
 				data.datasets[7].data.push(0);
 			}
 		}
+	} else {
+		graph.options.scales.yAxes[0].ticks.callback = function(value, index, values) {
+			return value + "%";
+		}
 	}
 	
 	graph.config.data = data;
@@ -762,6 +775,10 @@ function updateAgeGroupBar(graphContainer, t, d) {
 	var data = $.extend(true, {}, originalData);
 
 	if (t) {
+		graph.options.scales.yAxes[0].ticks.callback = function(value, index, values) {
+			return value;
+		}
+		
 		var keys = ["0-17", "18-29", "30-39", "40-49", "50-59", "60-69", "70-79", "80+"];
 		
 		data.datasets.forEach(dataset => {
@@ -774,6 +791,10 @@ function updateAgeGroupBar(graphContainer, t, d) {
 			data.datasets[0].data.push(aData[k]["partial"]);
 			data.datasets[1].data.push(aData[k]["full"]);
 		});
+	} else {
+		graph.options.scales.yAxes[0].ticks.callback = function(value, index, values) {
+			return value + "%";
+		}
 	}
 	
 	graph.config.data = data;

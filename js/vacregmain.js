@@ -137,6 +137,10 @@ $(document).ready(() => {
         } else
             pCode = pCode.toUpperCase();
         showAll(pCode);
+		
+		if (provinceProperties(pCode).displayNotes) {
+			$(".province-data-notes").removeClass("d-none");
+		}
     });
 
     //$("#provinceSelection").on("change", function (e) {

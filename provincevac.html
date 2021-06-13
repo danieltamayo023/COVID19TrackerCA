@@ -23,9 +23,9 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@turf/turf@5.1.6/turf.min.js"></script>
 
-    <script type="text/javascript" src="js/config.js?v=6.5.4.1"></script>
-    <script type="text/javascript" src="js/vaccharts.js?v=6.8.4.1"></script>
-    <script type="text/javascript" src="js/vacregmain.js?v=9.6.5.2"></script>
+    <script type="text/javascript" src="js/config.js?v=7.0.0.0"></script>
+    <script type="text/javascript" src="js/vaccharts.js?v=7.0.0.0"></script>
+    <script type="text/javascript" src="js/vacregmain.js?v=10.0.0.0"></script>
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-160029240-1"></script>
@@ -114,7 +114,7 @@
                                 <h1></h1> <b></b>
                                 
                                     <div class="material-switch pull-right">
-                                        <div class="switch-label d-inline-block">Eligible <span data-toggle='tooltip' title='When toggled, this value gives the percentage of those 12+ who have recieved at least one dose.'><i class="far fa-question-circle"></i></span></div>
+                                        <div class="switch-label d-inline-block">Eligible <span data-toggle='tooltip' title='When toggled, this value gives the percentage of those 12+ who have received at least one dose.'><i class="far fa-question-circle"></i></span></div>
                                         <div class="d-inline-block">
                                             <input id="popDoseToggle" name="criticalCases" type="checkbox" />
                                             <label for="popDoseToggle" class="label-success"></label>
@@ -378,7 +378,7 @@
                             <div class="card-header">
 								<i class="fas fa-chart-area mr-1"></i><span id="dosesAgeGroup"><span class="display-province"></span> Fully Vaccinated By Age Group</span>
 								<div class="material-switch pull-right">
-                                    <div class="switch-label d-inline-block">Percent <span data-toggle='tooltip' title='Placeholder description'><i class="far fa-question-circle"></i></span></div>
+                                    <div class="switch-label d-inline-block">Raw <span data-toggle='tooltip' title='When toggled, the graph displays the raw values for each age group instead of a percentage value.'><i class="far fa-question-circle"></i></span></div>
                                     <div class="d-inline-block">
                                         <input id="ageGroupFullToggle" data-target="ageGroupChart" name="criticalCases" type="checkbox" />
                                         <label for="ageGroupFullToggle" class="label-success"></label>
@@ -407,7 +407,7 @@
                             <div class="card-header">
 								<i class="fas fa-chart-area mr-1"></i><span id="dosesAgeGroupAtleast1"><span class="display-province"></span> At Least 1 Dose By Age Group</span>
 								<div class="material-switch pull-right">
-                                    <div class="switch-label d-inline-block">Percent <span data-toggle='tooltip' title='Placeholder description'><i class="far fa-question-circle"></i></span></div>
+                                    <div class="switch-label d-inline-block">Raw <span data-toggle='tooltip' title='When toggled, the graph displays the raw values for each age group instead of a percentage value.'><i class="far fa-question-circle"></i></span></div>
                                     <div class="d-inline-block">
                                         <input id="ageGroupAtleast1Toggle" data-target="ageGroupAtleast1Chart" name="criticalCases" type="checkbox" />
                                         <label for="ageGroupAtleast1Toggle" class="label-success"></label>
@@ -437,9 +437,9 @@
                     <div class="col-xl-12">
                         <div class="card mb-4">
                             <div class="card-header">
-								<i class="fas fa-chart-bar mr-1"></i><span id="ageGroupBarGraph"><span class="display-province"></span> Vaccines Administered By Age Group</span>
+								<i class="fas fa-chart-bar mr-1"></i><span id="ageGroupBarGraph"><span class="display-province"></span> Vaccinations By Age Group</span>
 								<div class="material-switch pull-right">
-                                    <div class="switch-label d-inline-block">Percent <span data-toggle='tooltip' title='Placeholder description'><i class="far fa-question-circle"></i></span></div>
+                                    <div class="switch-label d-inline-block">Raw <span data-toggle='tooltip' title='When toggled, the graph displays the raw values for each age group instead of a percentage value.'><i class="far fa-question-circle"></i></span></div>
                                     <div class="d-inline-block">
                                         <input id="ageGroupBarToggle" data-target="ageGroupBarCanvas" name="criticalCases" type="checkbox" />
                                         <label for="ageGroupBarToggle" class="label-success"></label>
@@ -489,9 +489,8 @@
         <footer class="py-4 bg-light mt-auto">
             <div class="container-fluid">
                 <div class="d-flex align-items-center justify-content-between small">
-                    <div class="text-muted">Copyright &copy; COVID19Tracker.ca 2020 // Near real-time COVID-19 data updates for every region in Canada, tracking cases, deaths, vaccinations, hospitalizations, ICU, recoveries and testing // <a href="mailto:noah.little@usask.ca">noah.little@usask.ca</a></div>
-                    <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script>
-                    <script type='text/javascript'>kofiwidget2.init('Support The Project', '#29abe0', 'G2G11J6WQ'); kofiwidget2.draw();</script>
+                    <div class="text-muted">Copyright &copy; COVID19Tracker.ca 2021 // Near real-time COVID-19 data updates for every region in Canada, tracking cases, deaths, vaccinations, hospitalizations, ICU, recoveries and testing // <a href="mailto:noah.little@usask.ca">noah.little@usask.ca</a></div><a class="btn btn-dark" href="https://ko-fi.com/covid19trackerca" role="button">Donate</a>
+                    
                 </div>
             </div>
         </footer>

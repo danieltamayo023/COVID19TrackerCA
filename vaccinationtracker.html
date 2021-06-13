@@ -22,12 +22,12 @@
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
     <script src="https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@turf/turf@5.1.6/turf.min.js"></script>
-    <link href="https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css" rel="stylesheet" />-->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css" rel="stylesheet" />
 
-    <script type="text/javascript" src="js/config.js?v=7.0.0"></script>
-    <script type="text/javascript" src="js/vacmap.js?v=6.9.1"></script>
-    <script type="text/javascript" src="js/vaccharts.js?v=6.9.1"></script>
-    <script type="text/javascript" src="js/vacmain.js?v=9.8.4"></script>
+    <script type="text/javascript" src="js/config.js?v=8.0.1"></script>
+    <script type="text/javascript" src="js/vacmap.js?v=7.0.2"></script>
+    <script type="text/javascript" src="js/vaccharts.js?v=7.0.3"></script>
+    <script type="text/javascript" src="js/vacmain.js?v=9.9.5"></script>
 
     <link rel="stylesheet" href="css/styles.css?v=5" />
 
@@ -430,7 +430,7 @@
                             <div class="card-header">
 								<i class="fas fa-chart-area mr-1"></i><span id="dosesAgeGroup">Canadians Fully Vaccinated By Age Group</span>
 								<div class="material-switch pull-right">
-                                    <div class="switch-label d-inline-block">Percent <span data-toggle='tooltip' title='Placeholder description'><i class="far fa-question-circle"></i></span></div>
+                                    <div class="switch-label d-inline-block">Raw <span data-toggle='tooltip' title='When toggled, the graph displays the raw values for each age group instead of a percentage value.'><i class="far fa-question-circle"></i></span></div>
                                     <div class="d-inline-block">
                                         <input id="ageGroupFullToggle" data-target="ageGroupChart" name="criticalCases" type="checkbox" />
                                         <label for="ageGroupFullToggle" class="label-success"></label>
@@ -440,13 +440,13 @@
                             <div class="card-body" id="dosesAgeGroupDiv">
                                 <canvas id="ageGroupChart" width="100%" height="40" style="max-height: 400px"></canvas>
                                 <div class="chart-options text-center">
-                                    <span class="mx-2">
+                                    <span class="mx-2 d-none">
                                         <label><input type="checkbox" onclick="toggleChartSetting(this)" />Last 3 Weeks</label>
                                     </span>
                                     <span class="mx-2">
                                         <label><input type="checkbox" onclick="toggleChartSetting(this)" />Logarithmic Scale</label>
                                     </span>
-                                    <span class="mx-2">
+                                    <span class="mx-2 d-none">
                                         <label><input type="checkbox" onclick="toggleChartSetting(this)" />Rolling Average (7 Days)</label>
                                     </span>
                                 </div>
@@ -459,7 +459,7 @@
                             <div class="card-header">
 								<i class="fas fa-chart-area mr-1"></i><span id="dosesAgeGroupAtleast1">Canadians With At Least 1 Dose By Age Group</span>
 								<div class="material-switch pull-right">
-                                    <div class="switch-label d-inline-block">Percent <span data-toggle='tooltip' title='Placeholder description'><i class="far fa-question-circle"></i></span></div>
+                                    <div class="switch-label d-inline-block">Raw <span data-toggle='tooltip' title='When toggled, the graph displays the raw values for each age group instead of a percentage value.'><i class="far fa-question-circle"></i></span></div>
                                     <div class="d-inline-block">
                                         <input id="ageGroupAtleast1Toggle" data-target="ageGroupAtleast1Chart" name="criticalCases" type="checkbox" />
                                         <label for="ageGroupAtleast1Toggle" class="label-success"></label>
@@ -469,13 +469,13 @@
                             <div class="card-body" id="dosesAgeGroupAtleast1Div">
                                 <canvas id="ageGroupAtleast1Chart" width="100%" height="40" style="max-height: 400px"></canvas>
                                 <div class="chart-options text-center">
-                                    <span class="mx-2">
+                                    <span class="mx-2 d-none">
                                         <label><input type="checkbox" onclick="toggleChartSetting(this)" />Last 3 Weeks</label>
                                     </span>
                                     <span class="mx-2">
                                         <label><input type="checkbox" onclick="toggleChartSetting(this)" />Logarithmic Scale</label>
                                     </span>
-                                    <span class="mx-2">
+                                    <span class="mx-2 d-none">
                                         <label><input type="checkbox" onclick="toggleChartSetting(this)" />Rolling Average (7 Days)</label>
                                     </span>
                                 </div>
@@ -489,9 +489,9 @@
                     <div class="col-xl-12">
                         <div class="card mb-4">
                             <div class="card-header">
-								<i class="fas fa-chart-bar mr-1"></i><span id="ageGroupBarGraph">Vaccines Administered in Canada By Age Group</span>
+								<i class="fas fa-chart-bar mr-1"></i><span id="ageGroupBarGraph">Vaccinations in Canada By Age Group</span>
 								<div class="material-switch pull-right">
-                                    <div class="switch-label d-inline-block">Percent <span data-toggle='tooltip' title='Placeholder description'><i class="far fa-question-circle"></i></span></div>
+                                    <div class="switch-label d-inline-block">Raw <span data-toggle='tooltip' title='When toggled, the graph displays the raw values for each age group instead of a percentage value.'><i class="far fa-question-circle"></i></span></div>
                                     <div class="d-inline-block">
                                         <input id="ageGroupBarToggle" data-target="ageGroupBarCanvas" name="criticalCases" type="checkbox" />
                                         <label for="ageGroupBarToggle" class="label-success"></label>
@@ -549,10 +549,14 @@
         <footer class="py-4 bg-light mt-auto">
             <div class="container-fluid">
                 <div class="d-flex align-items-center justify-content-between small">
-                    <div class="text-muted">Copyright &copy; COVID19Tracker.ca 2021 // Near real-time COVID-19 data updates for every region in Canada, tracking cases, deaths, vaccinations, hospitalizations, ICU, recoveries and testing // <a href="mailto:noah.little@usask.ca">noah.little@usask.ca</a></div>
-                    <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script>
-                    <script type='text/javascript'>kofiwidget2.init('Support The Project', '#29abe0', 'G2G11J6WQ'); kofiwidget2.draw();</script>
+                    <div class="text-muted">Copyright &copy; COVID19Tracker.ca 2021 // Near real-time COVID-19 data updates for every region in Canada, tracking cases, deaths, vaccinations, hospitalizations, ICU, recoveries and testing // <a href="mailto:noah.little@usask.ca">noah.little@usask.ca</a></div><a class="btn btn-dark" href="https://ko-fi.com/covid19trackerca" role="button">Donate</a>
+                    
                 </div>
+
+
+
+
+
             </div>
         </footer>
     </div>

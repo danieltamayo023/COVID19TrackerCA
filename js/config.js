@@ -25,7 +25,7 @@ var provinceAgeGroup = {
 		boxEnabled: false
 	},
 	"ON": {
-		population: 11971129,
+		population: 12083325,
 		boxEnabled: true
 	},
 	"MB": {
@@ -33,8 +33,8 @@ var provinceAgeGroup = {
 		boxEnabled: false
 	},
 	"SK": {
-		population: 905623,
-		boxEnabled: false
+		population: 942109,
+		boxEnabled: true
 	},
 	"AB": {
 		population: 3445146,
@@ -140,14 +140,14 @@ var ageGroupPopulation = {
 		"80+": 55355
 	},
 	"SK": {
-		"0-17": 273058,
-		"18-29": 181762,
-		"30-39": 172415,
-		"40-49": 143464,
-		"50-59": 142740,
-		"60-69": 136293,
-		"70-79": 78438,
-		"80+": 50511
+		"0-17": 283103,
+		"18-29": 189909,
+		"30-39": 183246,
+		"40-49": 151896,
+		"50-59": 147466,
+		"60-69": 138471,
+		"70-79": 79817,
+		"80+": 51304
 	},
 	"AB": {
 		"0-17": 976730,
@@ -241,79 +241,79 @@ function provinceProperties(code, name) {
     var hashmap = {
         "QC": {
             name: "Quebec",
-            population : 8575779,
+            population : 8585523,
             code: "QC",
 			displayNotes: false
         },
         "NL": {
             name: "Newfoundland and Labrador",
-            population : 520998,
+            population : 520286,
             code: "NL",
 			displayNotes: false
         },
         "BC": {
             name: "British Columbia",
-            population : 5145851,
+            population : 5174724,
             code: "BC",
 			displayNotes: false
         },
         "NU": {
             name: "Nunavut",
-            population : 39285,
+            population : 39536,
             code: "NU",
 			displayNotes: false
         },
         "NT": {
             name: "Northwest Territories",
-            population : 45074,
+            population : 44991,
             code: "NT",
 			displayNotes: false
         },
         "NB": {
             name: "New Brunswick",
-            population : 781315,
+            population : 783721,
             code: "NB",
 			displayNotes: false
         },
         "NS": {
             name: "Nova Scotia",
-            population : 979115,
+            population : 982326,
             code: "NS",
 			displayNotes: false
         },
         "SK": {
             name: "Saskatchewan",
-            population : 1177884,
+            population : 1179906,
             code: "SK",
-			displayNotes: false
+			displayNotes: true
         },
         "AB": {
             name: "Alberta",
-            population : 4428112,
+            population : 4444277,
             code: "AB",
-			displayNotes: true
+			displayNotes: false
         },
         "PE": {
             name: "Prince Edward Island",
-            population : 159713,
+            population : 160536,
             code: "PE",
 			displayNotes: false
         },
         "YT": {
             name: "Yukon",
-            population : 42176,
+            population : 42596,
             code: "YT",
 			displayNotes: false
         },
         "MB": {
             name: "Manitoba",
-            population : 1379584,
+            population : 1382904,
             code: "MB",
 			displayNotes: false
         },
         "ON": {
             name: "Ontario",
-            population : 14733119,
+            population : 14789778,
             code: "ON",
 			displayNotes: false
         }

@@ -19,7 +19,7 @@ var adults = 0;
 var adultsFull = 0;
 var populationObj = [{
     "province": "AB",
-    "population": 3806860
+    "population": 3761130
 }, {
     "province": "BC",
     "population": 4577078
@@ -52,7 +52,7 @@ var populationObj = [{
     "population": 7489220
 }, {
     "province": "SK",
-    "population": 993244
+    "population": 1033096
 }, {
     "province": "YT",
     "population": 36209

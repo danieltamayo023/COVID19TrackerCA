@@ -150,7 +150,7 @@ function lineGraph2(data, id, type, info, r) {
 		});
 	});
 	
-	_datasets.sort(function(a, b){return b.label < a.label ? 1 : -1})
+	_datasets.sort(function(a, b){return b.label < a.label ? 1 : -1});
 
     // used to setup graph that needs to be drawn
     var graphConfig = {
@@ -405,19 +405,31 @@ function barGraph3(data, id) {
 
 // bar graph for age groups
 function barGraph4(data, id, r) {
-    var keys = ["0-17", "18-29", "30-39", "40-49", "50-59", "60-69", "70-79", "80+"];
-    var name = ["0-17", "18-29", "30-39", "40-49", "50-59", "60-69", "70-79", "80+"];
+    var name = [];
     var allData = {
         "partial": [],
         "full": []
     };
-
-    keys.forEach(function (k) {
-        var aData = JSON.parse(data);
-        
-        allData["partial"].push(((aData[k]["partial"] / ageGroupPopulation[r][k]) * 100).toFixed(2));
-        allData["full"].push(((aData[k]["full"] / ageGroupPopulation[r][k]) * 100).toFixed(2));
-    });
+	var _data = [];
+	var notAllowedKeys = ["unknown", "all_ages", "not_reported"];
+	var aData = JSON.parse(data);
+	
+	$.each(aData, function(i, v){
+		if (notAllowedKeys.indexOf(i.toLowerCase()) < 0) {
+			var obj = {};
+			obj[i] = v;
+			_data.push(obj);
+		}
+	});
+	_data.sort(function(a, b){return Object.keys(b)[0] < Object.keys(a)[0] ? 1 : -1});
+	
+	$.each(_data, function(i, v){
+		var key = Object.keys(v)[0];
+		name.push(key);
+		allData["partial"].push(((aData[key]["partial"] / ageGroupPopulation[r][key]) * 100).toFixed(2));
+		allData["full"].push(((aData[key]["full"] / ageGroupPopulation[r][key]) * 100).toFixed(2));
+	});
+	
 
     var graphConfig = {
         graphTarget: $(id),

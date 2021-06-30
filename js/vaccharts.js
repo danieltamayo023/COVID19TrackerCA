@@ -100,17 +100,10 @@ function lineGraph(data, id, flag, type) {
 // used for age group
 function lineGraph2(data, id, type, info, r) {
     var name = [];
-    var allData = {
-        "0-17": [],
-        "18-29": [],
-        "30-39": [],
-        "40-49": [],
-        "50-59": [],
-        "60-69": [],
-        "70-79": [],
-        "80+": []
-    };
-
+    var allData = {};
+	var colors = ["#6e757c", "#757d98", "#927fad", "#bd7bb1", "#e975a0", "#ff767d", "#ff884f", "#ffa600"];
+	var notAllowedKeys = ["unknown", "all_ages", "not_reported"];
+	var _datasets = [];
     for (var i in data) {
         var date = new Date(data[i].date);
         date.setDate(date.getDate() + 1);
@@ -121,55 +114,43 @@ function lineGraph2(data, id, type, info, r) {
         }).format(date));
 
         var aData = JSON.parse(data[i].data);
-
-        if (typeof aData["0-17"] !== "undefined") {
-            allData["0-17"].push(parseFloat(((aData["0-17"][info] / ageGroupPopulation[r]["0-17"]) * 100).toFixed(2)));
-        } else {
-            allData["0-17"].push(0);
-        }
-        
-        if (typeof aData["18-29"] !== "undefined") {
-            allData["18-29"].push(parseFloat(((aData["18-29"][info] / ageGroupPopulation[r]["18-29"]) * 100).toFixed(2)));
-        } else {
-            allData["18-29"].push(0);
-        }
-        
-        if (typeof aData["30-39"] !== "undefined") {
-            allData["30-39"].push(parseFloat(((aData["30-39"][info] / ageGroupPopulation[r]["30-39"]) * 100).toFixed(2)));
-        } else {
-            allData["30-39"].push(0);
-        }
-        
-        if (typeof aData["40-49"] !== "undefined") {
-            allData["40-49"].push(parseFloat(((aData["40-49"][info] / ageGroupPopulation[r]["40-49"]) * 100).toFixed(2)));
-        } else {
-            allData["40-49"].push(0);
-        }
-        
-        if (typeof aData["50-59"] !== "undefined") {
-            allData["50-59"].push(parseFloat(((aData["50-59"][info] / ageGroupPopulation[r]["50-59"]) * 100).toFixed(2)));
-        } else {
-            allData["50-59"].push(0);
-        }
-        
-        if (typeof aData["60-69"] !== "undefined") {
-            allData["60-69"].push(parseFloat(((aData["60-69"][info] / ageGroupPopulation[r]["60-69"]) * 100).toFixed(2)));
-        } else {
-            allData["60-69"].push(0);
-        }
-        
-        if (typeof aData["70-79"] !== "undefined") {
-            allData["70-79"].push(parseFloat(((aData["70-79"][info] / ageGroupPopulation[r]["70-79"]) * 100).toFixed(2)));
-        } else {
-            allData["70-79"].push(0);
-        }
-        
-        if (typeof aData["80+"] !== "undefined") {
-            allData["80+"].push(parseFloat(((aData["80+"][info] / ageGroupPopulation[r]["80+"]) * 100).toFixed(2)));
-        } else {
-            allData["80+"].push(0);
-        }
+		$.each(aData, function(x, v){
+			if (notAllowedKeys.indexOf(x.toLowerCase()) < 0) {
+				if (typeof allData[x] === "undefined")
+					allData[x] = [];
+				if (typeof aData[x] !== "undefined") {
+					allData[x].push(parseFloat(((aData[x][info] / ageGroupPopulation[r][x]) * 100).toFixed(2)));
+				} else {
+					allData[x].push(0);
+				}
+				
+			}
+		});
     }
+	
+	var _c = 0;
+	$.each(allData, function(i, v){
+		_c += 1;
+		if (colors.length === _c)
+			_c = 0;
+		_datasets.push({
+			label: i,
+			lineTension: 0.2,
+			pointRadius: 0,
+			pointHoverRadius: 4,
+			pointHitRadius: 7,
+			pointBorderWidth: 1,
+			pointBorderColor: colors[_c],
+			pointBackgroundColor: colors[_c],
+			pointHoverBackgroundColor: colors[_c],
+			backgroundColor: "rgba(0, 0, 0, 0)",
+			borderColor: colors[_c],
+			data: allData[i],
+			hidden: false
+		});
+	});
+	
+	_datasets.sort(function(a, b){return b.label < a.label ? 1 : -1})
 
     // used to setup graph that needs to be drawn
     var graphConfig = {
@@ -179,128 +160,7 @@ function lineGraph2(data, id, type, info, r) {
         isPercent: true,
         chartdata: {
             labels: name,
-            datasets: [
-                {
-                    label: "0-17",
-                    lineTension: 0.2,
-                    pointRadius: 0,
-                    pointHoverRadius: 4,
-                    pointHitRadius: 7,
-                    pointBorderWidth: 1,
-                    pointBorderColor: "#6e757c",
-                    pointBackgroundColor: "#6e757c",
-                    pointHoverBackgroundColor: "#6e757c",
-                    backgroundColor: "rgba(0, 0, 0, 0)",
-                    borderColor: "#6e757c",
-                    data: allData["0-17"],
-                    hidden: false
-                },
-                {
-                    label: "18-29",
-                    lineTension: 0.2,
-                    pointRadius: 0,
-                    pointHoverRadius: 4,
-                    pointHitRadius: 7,
-                    pointBorderWidth: 1,
-                    pointBorderColor: "#757d98",
-                    pointBackgroundColor: "#757d98",
-                    pointHoverBackgroundColor: "#757d98",
-                    backgroundColor: "rgba(0, 0, 0, 0)",
-                    borderColor: "#757d98",
-                    data: allData["18-29"],
-                    hidden: false
-                },
-                {
-                    label: "30-39",
-                    lineTension: 0.2,
-                    pointRadius: 0,
-                    pointHoverRadius: 4,
-                    pointHitRadius: 7,
-                    pointBorderWidth: 1,
-                    pointBorderColor: "#927fad",
-                    pointBackgroundColor: "#927fad",
-                    pointHoverBackgroundColor: "#927fad",
-                    backgroundColor: "rgba(0, 0, 0, 0)",
-                    borderColor: "#927fad",
-                    data: allData["30-39"],
-                    hidden: false
-                },
-                {
-                    label: "40-49",
-                    lineTension: 0.2,
-                    pointRadius: 0,
-                    pointHoverRadius: 4,
-                    pointHitRadius: 7,
-                    pointBorderWidth: 1,
-                    pointBorderColor: "#bd7bb1",
-                    pointBackgroundColor: "#bd7bb1",
-                    pointHoverBackgroundColor: "#bd7bb1",
-                    backgroundColor: "rgba(0, 0, 0, 0)",
-                    borderColor: "#bd7bb1",
-                    data: allData["40-49"],
-                    hidden: false
-                },
-                {
-                    label: "50-59",
-                    lineTension: 0.2,
-                    pointRadius: 0,
-                    pointHoverRadius: 4,
-                    pointHitRadius: 7,
-                    pointBorderWidth: 1,
-                    pointBorderColor: "#e975a0",
-                    pointBackgroundColor: "#e975a0",
-                    pointHoverBackgroundColor: "#e975a0",
-                    backgroundColor: "rgba(0, 0, 0, 0)",
-                    borderColor: "#e975a0",
-                    data: allData["50-59"],
-                    hidden: false
-                },
-                {
-                    label: "60-69",
-                    lineTension: 0.2,
-                    pointRadius: 0,
-                    pointHoverRadius: 4,
-                    pointHitRadius: 7,
-                    pointBorderWidth: 1,
-                    pointBorderColor: "#ff767d",
-                    pointBackgroundColor: "#ff767d",
-                    pointHoverBackgroundColor: "#ff767d",
-                    backgroundColor: "rgba(0, 0, 0, 0)",
-                    borderColor: "#ff767d",
-                    data: allData["60-69"],
-                    hidden: false
-                },
-                {
-                    label: "70-79",
-                    lineTension: 0.2,
-                    pointRadius: 0,
-                    pointHoverRadius: 4,
-                    pointHitRadius: 7,
-                    pointBorderWidth: 1,
-                    pointBorderColor: "#ff884f",
-                    pointBackgroundColor: "#ff884f",
-                    pointHoverBackgroundColor: "#ff884f",
-                    backgroundColor: "rgba(0, 0, 0, 0)",
-                    borderColor: "#ff884f",
-                    data: allData["70-79"],
-                    hidden: false
-                },
-                {
-                    label: "80+",
-                    lineTension: 0.2,
-                    pointRadius: 0,
-                    pointHoverRadius: 4,
-                    pointHitRadius: 7,
-                    pointBorderWidth: 1,
-                    pointBorderColor: "#ffa600",
-                    pointBackgroundColor: "#ffa600",
-                    pointHoverBackgroundColor: "#ffa600",
-                    backgroundColor: "rgba(0, 0, 0, 0)",
-                    borderColor: "#ffa600",
-                    data: allData["80+"],
-                    hidden: false
-                }
-            ]
+            datasets: _datasets
         },
         ticks: 7
     }
